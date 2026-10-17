@@ -1,0 +1,1085 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#11191c">
+<meta name="description" content="戦線を支え、補給を断ち、包囲を閉じる。POCKET BLITZ — 1ファイルで動く戦術ゲーム。">
+<title>POCKET BLITZ — リアルタイム作戦司令室</title>
+<style>
+:root{color-scheme:dark;--bg:#101719;--panel:#192225;--raised:#202d30;--line:#344447;--ink:#edf1df;--sub:#a7b6b1;--muted:#748a85;--blue:#72d9cb;--red:#f08575;--gold:#e7cf8e;--green:#a5cc85;--mono:'SFMono-Regular',Consolas,'Liberation Mono',monospace;--sans:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Kaku Gothic ProN','Meiryo',sans-serif}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--ink);font-family:var(--sans)}body{overflow:hidden}button,input{font:inherit}button,a,input{-webkit-tap-highlight-color:transparent}button{cursor:pointer;touch-action:manipulation}button{color:inherit}button:disabled{cursor:not-allowed;opacity:.4}button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:4px}button{border:0}button svg{width:18px;height:18px;flex:none}svg.icon{display:inline-block;vertical-align:middle;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.screen{display:none;min-width:0;width:100%;height:100%;height:100dvh}.screen.active{display:flex}h1,h2,h3,p{margin:0}.mono,.eyebrow{font-family:var(--mono)}.eyebrow{font-size:10px;letter-spacing:2px;font-weight:600;color:var(--sub)}.muted{color:var(--sub)}.accent{color:var(--blue)}.gold{color:var(--gold)}.tiny{font-size:11px;line-height:1.65}.chip{font-family:var(--mono);font-size:10px;letter-spacing:.6px;border:1px solid var(--line);padding:5px 8px;border-radius:3px;white-space:nowrap}.chip.green{border-color:#4c6254;color:var(--green)}.screen-top{height:66px;flex:none;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);gap:16px}.brand{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-weight:700;font-size:13px;letter-spacing:1.2px}.brand-mark{width:26px;height:30px;display:grid;place-items:center;background:var(--gold);color:#152123;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);font-size:22px}.top-links{display:flex;gap:10px;align-items:center}.text-btn{background:none;color:var(--sub);padding:10px 4px;font-size:11px;text-decoration:none}.text-btn:hover{color:var(--ink)}.icon-btn{background:var(--raised);border:1px solid var(--line);width:36px;height:36px;display:inline-grid;place-items:center;border-radius:4px;flex:none}.icon-btn:hover{background:#304044}.soft-btn{background:var(--raised);border:1px solid var(--line);padding:10px 12px;font-size:12px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px}.soft-btn:hover{background:#2a3b3e}.soft-btn.active{border-color:var(--blue);color:var(--blue);background:#233f3e}.primary{background:var(--gold);color:#172124;border:1px solid var(--gold);padding:15px 20px;font-weight:750;font-size:14px;border-radius:4px;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;transition:background .15s}.primary:hover{background:#f5dfaa}.section-label{display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin-bottom:12px;font-size:12px;font-weight:600}.section-label small{font-size:10px;font-weight:400;color:var(--sub)}
+#screen-setup{overflow:auto;flex-direction:column;padding:0 clamp(18px,4vw,64px) 28px;background:radial-gradient(ellipse at 72% 30%,#27373570,transparent 60%),var(--bg)}.setup-inner{width:100%;max-width:1360px;margin:auto}.briefing{display:grid;grid-template-columns:minmax(290px,.78fr) minmax(0,1.22fr);gap:clamp(25px,5vw,76px);padding:38px 0 28px}.intro .eyebrow{color:var(--gold);margin:6px 0 14px}.hero-title{font-family:Impact,'Arial Narrow',sans-serif;font-size:clamp(58px,6.2vw,88px);font-weight:900;letter-spacing:1px;line-height:.94}.hero-title span{display:block;color:var(--blue)}.hero-line{font-size:17px;letter-spacing:1.6px;margin:22px 0 10px;font-weight:600}.intro-copy{color:var(--sub);font-size:12px;line-height:1.9;max-width:340px}.doctrine-pick{margin-top:28px}.doctrine-list{display:flex;flex-direction:column;gap:7px}.doctrine{display:flex;align-items:center;text-align:left;background:#172124;border:1px solid var(--line);padding:11px 12px;border-radius:4px;gap:12px;position:relative}.doctrine[aria-pressed=true]{border-color:var(--gold);background:#2d3027}.doctrine .doctrine-icon{width:34px;height:36px;border:1px solid #4b5a51;display:grid;place-items:center;color:var(--gold);border-radius:3px;flex:none}.doctrine strong{display:block;font-size:12px;line-height:1.5}.doctrine small{font-size:10px;line-height:1.55;color:var(--sub);display:block;margin-top:2px}.choice-dot{width:11px;height:11px;border:1px solid var(--muted);border-radius:50%;margin-left:auto;flex:none}.doctrine[aria-pressed=true] .choice-dot{background:var(--gold);border:3px solid #2d3027;outline:1px solid var(--gold)}.deploy-actions{display:flex;flex-direction:column;gap:8px;margin-top:20px}.deploy-note{font-size:10px;color:var(--sub);text-align:center;margin-top:8px}.map-stage{border:1px solid #3b4d49;border-radius:6px;overflow:hidden;background:#152022;box-shadow:0 20px 70px #0003}.map-stage-head{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;border-bottom:1px solid var(--line);gap:8px}.map-stage-head strong{font-size:12px}.map-stage-head .eyebrow{font-size:9px}.preview-wrap{position:relative;aspect-ratio:1.58;min-height:200px;background:radial-gradient(ellipse at 50% 50%,#23332e,#121d20)}#preview-canvas{width:100%;height:100%;display:block}.preview-corner{position:absolute;top:13px;left:16px;font-size:9px;letter-spacing:1.5px;color:var(--muted);pointer-events:none}.preview-legend{position:absolute;bottom:12px;left:16px;display:flex;gap:16px;font-size:10px;color:var(--sub)}.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--blue);margin-right:5px}.dot.red{background:var(--red)}.dot.neutral{background:var(--gold)}.map-stage-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:11px 16px;border-top:1px solid var(--line);font-size:10px;color:var(--sub)}.map-stage-foot b{font-family:var(--mono);font-size:15px;color:var(--ink);margin-right:4px}.balance-check{color:var(--green);font-size:10px}.battlefield-select{margin-top:22px}.map-options{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.map-option{background:#172124;border:1px solid var(--line);border-radius:4px;padding:11px 5px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:7px}.map-option[aria-pressed=true]{color:var(--blue);border-color:var(--blue);background:#1e3433}.map-option svg{width:26px;height:23px}.map-option span{font-size:11px}.map-description{font-size:10px;color:var(--sub);line-height:1.65;min-height:33px;margin-top:8px}.setup-row{display:flex;align-items:flex-end;gap:12px;margin-top:16px}.difficulty{flex:1}.segmented{display:flex;gap:3px;background:#0f181b;border:1px solid var(--line);padding:3px;border-radius:4px}.segmented button{flex:1;background:transparent;color:var(--sub);border-radius:3px;padding:9px 7px;font-size:11px;white-space:nowrap;min-height:34px}.segmented button[aria-pressed=true]{background:#33423c;color:var(--ink)}.segmented button.master[aria-pressed=true]{color:#ffd5b3;background:#4b302b}.seed-control{width:148px}.seed-input{display:flex;align-items:center;border:1px solid var(--line);border-radius:4px;padding:3px;background:#0f181b}.seed-input input{color:var(--sub);font-family:var(--mono);font-size:11px;width:100%;min-width:0;border:0;background:none;padding-left:7px;outline:none;user-select:text}.seed-input .icon-btn{width:32px;height:34px;border:0}.strategy-strip{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:20px 0;gap:30px}.strategy-item{display:flex;gap:13px}.strategy-number{font:24px var(--mono);color:var(--muted);line-height:1}.strategy-item strong{font-size:12px;display:block;margin-bottom:5px}.strategy-item p{font-size:10px;line-height:1.65;color:var(--sub)}.records{display:flex;align-items:center;justify-content:space-between;padding-top:20px;gap:16px}.records-label{font-size:10px;color:var(--muted)}.record-values{display:flex;gap:34px}.record-values div{display:flex;align-items:baseline;gap:8px}.record-values small{font-size:10px;color:var(--sub)}.record-values b{font:16px var(--mono);color:var(--gold)}
+#screen-game{flex-direction:column;background:#111b1e;overflow:hidden}.battle-header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--line);flex:none}.battle-brand{display:flex;align-items:center;gap:10px}.battle-brand .brand{font-size:12px}.battle-meta{display:flex;align-items:center;gap:23px}.stat{font:15px var(--mono);white-space:nowrap}.stat small{font:9px var(--sans);color:var(--sub);display:block;margin-bottom:3px}.stat.cp{color:var(--gold)}.controlbar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 18px;background:#182225;border-bottom:1px solid var(--line);flex:none}.control-left,.control-right{display:flex;gap:7px;align-items:center}.speed-control{padding:2px}.speed-control button{min-height:30px;min-width:40px;padding:6px 8px;font-family:var(--mono)}.controlbar .soft-btn{padding:6px 10px;min-height:36px;font-size:11px}.state-light{width:6px;height:6px;border-radius:50%;background:var(--gold);display:inline-block;margin-right:7px}.ticker{height:31px;flex:none;display:flex;align-items:center;gap:8px;padding:0 18px;background:#10191c;border-bottom:1px solid #2b3e3e;min-width:0}.ticker .eyebrow{font-size:8px;color:var(--blue);flex:none;letter-spacing:1px}.ticker span:last-child{font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--sub)}.war-room{display:grid;grid-template-columns:minmax(0,1fr) 280px;flex:1;min-height:0}.map-room{min-height:0;min-width:0;display:flex;flex-direction:column;position:relative;background:radial-gradient(ellipse at 50% 45%,#22342f,#121d20)}.objective-bar{display:flex;justify-content:space-between;align-items:center;padding:12px 17px 4px;gap:8px;font-size:10px;color:var(--sub);flex:none}.objective-bar .objective-title{color:var(--gold);font-size:11px}.objective-progress{display:flex;gap:5px;align-items:center;white-space:nowrap}.obj-light{width:9px;height:9px;border:1px solid var(--muted);transform:rotate(45deg)}.obj-light.ally{background:var(--blue);border-color:var(--blue)}.obj-light.enemy{background:var(--red);border-color:var(--red)}#canvas-wrap{flex:1;min-height:0;min-width:0;position:relative;overflow:hidden}#game-canvas{width:100%;height:100%;display:block;touch-action:none;user-select:none}.map-tools{position:absolute;right:12px;bottom:13px;display:flex;gap:4px}.map-tools .icon-btn{background:#182629ed;box-shadow:0 3px 12px #0003}.paused-label{position:absolute;top:11px;left:50%;transform:translateX(-50%);font:9px var(--mono);letter-spacing:1.8px;padding:6px 11px;border:1px solid #6d6b4b;color:var(--gold);background:#1c282be8;pointer-events:none;border-radius:3px}.map-legend{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 16px 10px;font-size:9px;color:var(--muted);flex:none;min-height:26px}.map-legend .legend-items{display:flex;gap:12px;align-items:center}.map-hint{position:absolute;left:14px;bottom:14px;max-width:calc(100% - 151px);font-size:10px;line-height:1.7;color:var(--ink);pointer-events:none;background:#142123e8;padding:7px 11px;border-left:2px solid var(--gold);border-radius:2px}.command-panel{border-left:1px solid var(--line);background:#182326;display:flex;flex-direction:column;min-height:0;overflow:auto;padding:18px 16px;gap:16px}.panel-heading{display:flex;align-items:center;justify-content:space-between}.panel-heading span{font-size:10px;color:var(--sub)}.unit-header{display:flex;gap:11px;align-items:center;margin-top:12px}.unit-symbol{display:grid;place-items:center;width:44px;height:38px;border:1px solid #609e95;color:var(--blue);background:#233d3d;flex:none}.unit-symbol svg{width:31px;height:22px}.unit-title{font-size:13px;font-weight:650;line-height:1.6}.unit-sub{font-size:10px;color:var(--sub);margin-top:2px}.unit-status{font-size:10px;color:var(--green);margin-top:12px;display:flex;justify-content:space-between}.bars{display:flex;flex-direction:column;gap:10px;margin-top:12px}.bar-label{font-size:9px;display:flex;justify-content:space-between;color:var(--sub);margin-bottom:5px}.bar-label b{font:11px var(--mono);color:var(--ink)}.bar-track{height:4px;background:#354443;overflow:hidden;border-radius:2px}.bar-fill{height:100%;background:var(--blue);transition:width .12s}.bar-fill.str{background:var(--gold)}.unit-controls{display:flex;gap:5px;margin-top:12px}.unit-controls .soft-btn{flex:1;font-size:10px;padding:7px 8px;min-height:34px}.skill-section{border-top:1px solid var(--line);padding-top:15px}.skill-section .eyebrow{font-size:9px;letter-spacing:1px;margin-bottom:9px}.skill-grid{display:flex;flex-direction:column;gap:7px}.skill{display:flex;align-items:center;justify-content:space-between;gap:7px;border:1px solid #5b5e46;background:#33382c;color:var(--gold);padding:11px 10px;border-radius:4px;text-align:left}.skill.reinforce{color:var(--blue);border-color:#3e625c;background:#243a37}.skill-name{display:flex;gap:8px;align-items:center;font-size:11px;font-weight:650}.skill small{font:10px var(--mono);white-space:nowrap}.skill-caption{font-size:9px;color:var(--sub);margin-top:8px;line-height:1.7}.roster-section{border-top:1px solid var(--line);padding-top:14px;min-height:120px;flex:1}.roster-head{display:flex;align-items:center;justify-content:space-between;font-size:10px;margin-bottom:9px;color:var(--sub)}.roster-list{display:flex;flex-direction:column;gap:3px}.roster-unit{display:flex;align-items:center;gap:8px;border:1px solid transparent;border-radius:3px;background:transparent;padding:6px;color:var(--sub);font-size:10px;text-align:left}.roster-unit.selected{background:#25403e;border-color:#487069;color:var(--blue)}.roster-unit svg{width:24px;height:17px;flex:none}.roster-unit .name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.roster-unit .roster-org{margin-left:auto;font:9px var(--mono);color:var(--sub)}.roster-unit.cut{color:var(--red)}.mini-objective{margin-top:auto;border:1px solid var(--line);padding:11px;border-radius:4px;font-size:10px;line-height:1.8;color:var(--sub)}.mini-objective strong{color:var(--gold);display:block;font-weight:550}.mobile-only{display:none!important}.btn-waypoint.active{border-color:var(--gold);color:var(--gold)}
+#screen-report{overflow:auto;align-items:center;justify-content:center;padding:24px;background:radial-gradient(ellipse at center,#2a3c34,var(--bg) 72%)}.report{width:100%;max-width:660px;border:1px solid #516454;background:#192426;padding:clamp(22px,4vw,44px);position:relative;border-radius:6px}.report-top{display:flex;align-items:center;gap:10px;justify-content:space-between}.report h1{font:clamp(32px,6vw,48px) Impact,'Arial Narrow',sans-serif;letter-spacing:1px;margin-top:25px}.report-subtitle{font-size:12px;color:var(--sub);margin-top:7px}.rank-row{display:flex;align-items:center;gap:24px;padding:25px 0;margin:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.rank{font:84px Impact,sans-serif;color:var(--gold);line-height:1;min-width:65px}.rank-feedback{font-size:13px;line-height:1.85;max-width:360px}.rank-feedback small{display:block;color:var(--sub);font-size:11px;margin-top:5px}.kpis{display:grid;grid-template-columns:1fr 1fr;gap:22px 16px}.kpi small{font-size:10px;color:var(--sub);display:block}.kpi strong{display:block;font:27px var(--mono);margin-top:7px}.kpi span{font-size:10px;color:var(--muted)}.report-actions{margin-top:28px;display:flex;gap:8px;flex-wrap:wrap}.report-actions .primary{flex:1;min-width:190px}.report-actions .soft-btn{flex:1;min-width:120px}.report-footer{font-size:10px;color:var(--muted);margin-top:18px}.report-score{font-size:11px;color:var(--sub);margin-top:22px;line-height:1.9}
+dialog{background:#1b292b;color:var(--ink);border:1px solid #59746b;border-radius:7px;width:min(560px,calc(100% - 28px));max-height:85dvh;padding:24px;box-shadow:0 20px 90px #0008}dialog::backdrop{background:#060d10c9;backdrop-filter:blur(4px)}.dialog-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:20px}.dialog-head h2{font-size:18px}.help-step{padding:14px 0;border-top:1px solid var(--line)}.help-step h3{font-size:13px;color:var(--gold);margin-bottom:7px}.help-step p{font-size:12px;line-height:1.85;color:var(--sub)}.help-units{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:11px;margin-top:12px}.help-units div{background:#132022;padding:12px;border:1px solid var(--line);border-radius:4px}.help-units svg{color:var(--blue);margin-right:7px}.help-units small{display:block;color:var(--sub);font-size:10px;line-height:1.7;margin-top:6px}.help-keys{font-size:10px;line-height:2;color:var(--sub);padding-top:15px}kbd{background:#344440;border-radius:3px;padding:2px 5px;color:var(--ink);font-family:var(--mono)}.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#30423c;border:1px solid #718775;border-radius:4px;font-size:12px;color:var(--ink);padding:11px 17px;z-index:20;max-width:90%;box-shadow:0 4px 30px #0005;pointer-events:none;opacity:0;transition:opacity .2s}.toast.visible{opacity:1}[hidden]{display:none!important}
+@media(min-width:1500px){.briefing{padding-top:55px;padding-bottom:40px}.command-panel{padding:22px}.war-room{grid-template-columns:minmax(0,1fr) 310px}}
+@media(max-width:900px){.briefing{gap:28px}.hero-title{font-size:66px}.intro-copy{font-size:11px}.seed-control{width:125px}.war-room{grid-template-columns:minmax(0,1fr) 246px}.command-panel{padding:14px 12px}.battle-meta{gap:14px}.battle-header{padding:8px 12px}.controlbar{padding:6px 12px}}
+@media(max-width:700px){#screen-setup{padding:0 18px 28px}.screen-top{height:57px}.top-links .build-label{display:none}.brand{font-size:11px}.briefing{display:flex;flex-direction:column;gap:25px;padding:26px 0}.intro{display:contents}.intro-heading{order:0}.hero-title{font-size:clamp(36px,8.4vw,56px);letter-spacing:-.5px;display:flex;gap:10px}.hero-title span{display:inline}.intro .eyebrow{font-size:9px;margin-top:0}.hero-line{font-size:15px;margin-top:16px;margin-bottom:7px}.intro-copy{font-size:11px;max-width:none}.setup-main{order:1}.doctrine-pick{order:2;margin-top:0}.doctrine-list{gap:7px}.deploy-actions{order:3;margin-top:-5px}.deploy-note{margin-top:2px}.preview-wrap{aspect-ratio:1.68;min-height:0}.map-stage-head{padding:11px 13px}.map-stage-foot{padding:10px 12px}.map-stage-foot b{font-size:13px}.map-options{gap:6px}.map-option{padding:10px 4px}.battlefield-select{margin-top:18px}.setup-row{margin-top:10px}.seed-control{width:139px}.strategy-strip{gap:14px;padding:18px 0}.strategy-item{display:block}.strategy-number{font-size:16px;margin-bottom:8px}.strategy-item strong{font-size:11px}.strategy-item p{font-size:9px}.records{display:block}.record-values{justify-content:space-between;gap:8px;margin-top:12px}.record-values div{display:block}.record-values small{display:block;margin-bottom:5px}.record-values b{font-size:16px}.mobile-only{display:inline-flex!important}.desktop-only{display:none!important}.battle-header{padding:6px 10px;gap:6px;min-height:52px}.battle-brand{gap:7px}.battle-brand .brand{font-size:10px;letter-spacing:.6px}.battle-brand .brand-mark{width:19px;height:23px;font-size:17px}.battle-brand .icon-btn{width:32px;height:34px}.battle-meta{gap:13px}.stat{font-size:12px}.stat small{font-size:8px;margin-bottom:2px}.controlbar{padding:5px 8px;gap:6px}.control-left,.control-right{gap:4px}.controlbar .soft-btn{font-size:10px;padding:5px 7px;min-height:34px}.controlbar .soft-btn svg{width:15px;height:15px}.controlbar .icon-btn{width:32px;height:34px}.speed-control button{min-width:32px;padding:5px 7px;font-size:11px}.ticker{padding:0 10px;height:26px;gap:6px}.ticker span:last-child{font-size:9px}.war-room{display:flex;flex-direction:column}.map-room{flex:1;min-height:120px}.objective-bar{padding:8px 10px 0;font-size:9px}.objective-bar .objective-title{font-size:10px}.objective-progress{font-size:9px}.map-legend{padding:4px 10px 6px;font-size:8px;min-height:20px}.map-legend .legend-items{gap:9px}.paused-label{font-size:8px;top:7px;padding:5px 8px}.map-hint{left:9px;bottom:9px;font-size:9px;padding:5px 8px;max-width:calc(100% - 124px);line-height:1.5}.map-tools{right:8px;bottom:8px;gap:3px}.map-tools .icon-btn{width:31px;height:32px}.command-panel{border-left:0;border-top:1px solid var(--line);padding:10px 11px max(10px,env(safe-area-inset-bottom));display:grid;grid-template-columns:minmax(0,1fr) 135px;gap:10px;overflow:visible;flex:none}.panel-heading,.unit-status,.skill-caption,.roster-section,.mini-objective{display:none}.unit-header{margin-top:0;gap:8px}.unit-symbol{width:34px;height:28px}.unit-symbol svg{width:26px;height:19px}.unit-title{font-size:11px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}.unit-name-wrap{min-width:0}.unit-sub{font-size:9px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.bars{flex-direction:row;gap:9px;margin-top:9px}.bars>div{flex:1;min-width:0}.bar-label{font-size:8px;margin-bottom:4px}.bar-label b{font-size:9px}.unit-controls{gap:4px;margin-top:9px}.unit-controls .soft-btn{padding:4px 6px;min-height:30px;font-size:10px}.unit-controls .btn-waypoint{display:none}.skill-section{border:0;padding:0;display:flex;flex-direction:column;justify-content:space-between}.skill-section .eyebrow{display:none}.skill-grid{gap:6px;flex:1}.skill{padding:8px 7px;display:flex;min-height:42px}.skill-name{font-size:10px;gap:5px}.skill-name svg{width:15px}.skill small{font-size:9px}.skill.reinforce{margin-bottom:0}.command-panel #roster-mobile{margin-top:6px;min-height:28px;padding:3px 6px;font-size:9px}.report{padding:23px}.rank-feedback{font-size:12px}.report-actions{gap:7px}.kpis{gap:18px 10px}.kpi strong{font-size:23px}}
+@media(max-width:370px){.battle-brand .brand{display:none}.hero-title{font-size:36px}.setup-row{gap:8px}.seed-control{width:122px}.controlbar .soft-btn{padding:5px}.controlbar .soft-btn .label{display:none}.command-panel{grid-template-columns:minmax(0,1fr) 119px;gap:8px}.skill-name{font-size:9px}.skill-name svg{display:none}.map-stage-foot{font-size:9px}.balance-check{font-size:9px}.objective-bar{font-size:8px}}
+@media(max-height:520px) and (orientation:landscape){.war-room{display:grid;grid-template-columns:minmax(0,1fr) 220px}.command-panel{display:flex;flex-direction:column;border-left:1px solid var(--line);border-top:0;overflow:auto;padding:10px;gap:12px}.battle-header{min-height:42px;padding:4px 12px}.battle-header .brand-mark,.ticker,.skill-caption,.roster-section,.mini-objective,.panel-heading{display:none}.controlbar{padding:3px 10px}.objective-bar{padding-top:5px}.unit-status{display:flex}.bars{margin-top:9px}.skill-section{border-top:1px solid var(--line);padding-top:9px}.skill-grid{flex-direction:column}.map-legend{padding-bottom:5px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* v5: a fixed planning/execution cycle replaces realtime controls. */
+#phase-chip{color:var(--gold);border-color:#64705a;letter-spacing:.4px;font-size:10px}.group-controls{display:flex;gap:6px;min-width:0}.group-controls button{border:1px solid #46615b;background:#20312f;color:var(--sub);border-radius:4px;padding:8px 10px;font-size:10px;min-height:34px;white-space:nowrap}.group-controls button[aria-pressed=true]{background:#3b4733;color:var(--gold);border-color:var(--gold)}.execution-dock{display:flex;gap:10px;align-items:center;flex:none;background:#22322d;border-top:1px solid #54664d;padding:10px 18px max(10px,env(safe-area-inset-bottom))}.turn-copy{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}.turn-copy strong{font-size:12px;color:var(--gold)}.turn-copy span{font-size:10px;color:var(--sub);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.execution-dock .primary{min-height:43px;min-width:190px;padding:10px 15px;font-size:13px}.execution-dock .soft-btn{min-height:40px}.unit-controls #posture{min-width:68px}.unit-controls #posture.active{border-color:var(--red);color:var(--red);background:#3b2a24}.map-hint{max-width:min(500px,calc(100% - 151px))}.skill-caption{line-height:1.5}.group-controls button:disabled{opacity:.4}.is-executing #game-canvas{cursor:grab}
+@media(max-width:700px){.execution-dock{padding:7px 9px max(7px,env(safe-area-inset-bottom));gap:6px}.execution-dock .primary{min-width:151px;min-height:43px;padding:8px 10px;font-size:11px;gap:6px}.execution-dock .primary svg{width:15px}.execution-dock .soft-btn{font-size:10px;min-height:38px;padding:7px}.turn-copy strong{font-size:10px;line-height:1.4}.turn-copy span{display:none}.group-controls{width:100%;gap:5px}.group-controls button{flex:1;padding:7px 5px;min-height:33px;font-size:10px}.map-legend{padding:5px 8px}.control-left{min-width:0}.controlbar .desktop-only{display:none}.controlbar #playback-toggle{font-size:9px;padding:5px}.unit-controls .soft-btn{padding:4px;min-height:31px;font-size:9px}.unit-controls #posture{min-width:60px}.command-panel{padding-top:8px;padding-bottom:8px}.map-hint{font-size:9px;max-width:calc(100% - 124px)}#phase-chip{font-size:9px;padding:6px}}
+@media(max-width:370px){.execution-dock .primary{min-width:137px}.execution-dock .primary svg{display:none}.turn-copy strong{font-size:9px}.controlbar #phase-chip{font-size:8px;padding:5px}.controlbar #playback-toggle{font-size:8px;max-width:61px}.group-controls button{font-size:9px}.unit-controls #posture{min-width:54px}}
+@media(max-height:520px) and (orientation:landscape){.execution-dock{padding:5px 10px;min-height:48px}.execution-dock .primary{min-height:35px}.group-controls button{min-height:28px;padding:5px 8px}.map-legend{padding-top:3px;padding-bottom:3px}}
+.ticker{height:auto;min-height:31px;padding-top:6px;padding-bottom:6px;align-items:baseline}.ticker span:last-child{white-space:normal;line-height:1.6}.unit-controls #posture[aria-pressed=true]{border-color:var(--red);color:var(--red);background:#3b2a24}
+@media(max-width:700px){.ticker{min-height:26px;padding-top:4px;padding-bottom:4px}.ticker .eyebrow{display:none}.ticker span:last-child{font-size:10px}}
+@media(max-width:420px){.controlbar .soft-btn .label{display:none}.controlbar .soft-btn{gap:0}}
+
+/* v6: compact mission controls keep the map available on a phone. */
+.plan-pick{margin-top:18px}.plan-pick p{margin-top:7px}.plan-cards{display:grid;gap:10px;margin-top:18px}.plan-cards button{text-align:left;background:#243a35;border:1px solid #567467;border-radius:5px;padding:15px;color:var(--ink)}.plan-cards b{color:var(--gold);font-size:14px}.plan-cards small{display:block;font-size:12px;line-height:1.7;color:var(--sub);margin-top:6px}
+#mission-mode{font:11px var(--sans);background:#263e39;color:var(--gold);border:1px solid #7e9064;border-radius:4px;padding:6px;min-height:34px;min-width:72px}.unit-controls{flex-wrap:wrap}.unit-controls #mission-mode{flex-basis:100%}#run-toggle{min-width:150px}#auto-pause{white-space:nowrap}#command-title{font-size:12px}.mission-caption{color:var(--gold)}
+@media(max-width:700px){.unit-controls{flex-wrap:nowrap}.unit-controls #unit-prev,.unit-controls #unit-next{display:none}.unit-controls #mission-mode{flex:1;min-width:64px;width:64px;font-size:10px;min-height:31px}#run-toggle{min-width:111px;justify-content:center}.execution-dock #battle-plan{font-size:10px;padding:6px;white-space:nowrap}.execution-dock #undo-order{font-size:0;width:32px;min-width:32px;padding:5px}.execution-dock #undo-order::before{content:'↶';font-size:17px}#command-title{font-size:10px}#auto-pause{font-size:9px;padding:5px}#phase-chip{font-size:8px;padding:5px}#pace-toggle{font-size:10px;min-width:38px;padding:5px}.map-hint{max-width:calc(100% - 124px)}}
+@media(max-width:370px){#phase-chip{display:none}.execution-dock{gap:4px}#run-toggle{min-width:104px}.controlbar .control-left{gap:3px}}
+</style>
+</head>
+<body>
+<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"><defs>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="m14 6-6 6 6 6"/></symbol><symbol id="i-next" viewBox="0 0 24 24"><path d="m10 6 6 6-6 6"/></symbol><symbol id="i-bolt" viewBox="0 0 24 24"><path d="m14 2-9 12h7l-2 8 9-12h-7z"/></symbol><symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M1 12h4m14 0h4"/></symbol><symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6zM12 8v8m-4-4h8"/></symbol><symbol id="i-route" viewBox="0 0 24 24"><circle cx="5" cy="18" r="2"/><circle cx="19" cy="6" r="2"/><path d="M5 16V8h7v10h7V8"/></symbol><symbol id="i-dice" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 8h.01M16 16h.01M12 12h.01M16 8h.01M8 16h.01" stroke-width="3"/></symbol><symbol id="i-plain" viewBox="0 0 24 24"><path d="M2 18h20M4 13l4-3 4 3 4-5 4 5M7 5v3m7-5v3"/></symbol><symbol id="i-forest" viewBox="0 0 24 24"><path d="m8 3-5 8h3l-4 6h12l-4-6h3zM8 17v4m9-14-4 6h2l-3 5h10l-3-5h2zM17 18v3"/></symbol><symbol id="i-mountain" viewBox="0 0 24 24"><path d="m2 20 8-16 6 12 3-6 4 10zM7 10l3 2 2-2"/></symbol><symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 5m0 3h.01"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol><symbol id="i-volume" viewBox="0 0 24 24"><path d="M3 9h4l5-4v14l-5-4H3zM16 8q5 4 0 8m3-11q7 7 0 14"/></symbol><symbol id="i-muted" viewBox="0 0 24 24"><path d="M3 9h4l5-4v14l-5-4H3zm13 0 6 6m-6 0 6-6"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></symbol><symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol><symbol id="i-fit" viewBox="0 0 24 24"><path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6"/></symbol><symbol id="i-report" viewBox="0 0 24 24"><path d="M4 3h16v18H4zM8 16v-4m4 4V8m4 8v-6"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 16v5h16v-5"/></symbol>
+<symbol id="u-INF" viewBox="0 0 36 24"><rect x="2" y="3" width="32" height="18"/><path d="m2 3 32 18M2 21 34 3"/></symbol><symbol id="u-ARM" viewBox="0 0 36 24"><rect x="2" y="3" width="32" height="18"/><ellipse cx="18" cy="12" rx="10" ry="5"/></symbol><symbol id="u-MOT" viewBox="0 0 36 24"><rect x="2" y="3" width="32" height="18"/><path d="m2 3 32 18M2 21 34 3M10 3v18M26 3v18"/></symbol><symbol id="u-SPG" viewBox="0 0 36 24"><rect x="2" y="3" width="32" height="18"/><circle cx="18" cy="12" r="3" fill="currentColor"/></symbol>
+</defs></svg>
+<section id="screen-setup" class="screen active" aria-label="作戦ブリーフィング"><div class="setup-inner">
+<header class="screen-top"><div class="brand"><span class="brand-mark">ϟ</span> BLITZ COMMAND</div><div class="top-links"><span class="eyebrow build-label">LIVE COMMAND / V6</span><button class="text-btn" data-help>遊び方</button><a class="icon-btn" href="./index.html" download="pocket-blitz.html" aria-label="単一HTML版をダウンロード" title="HTMLをダウンロード"><svg class="icon"><use href="#i-download"/></svg></a></div></header>
+<main class="briefing">
+<div class="intro"><div class="intro-heading"><div class="eyebrow">SET THE PLAN. WATCH IT UNFOLD.</div><h1 class="hero-title">POCKET <span>BLITZ.</span></h1><p class="hero-line">作戦を描け。戦線が動き出す。</p><p class="intro-copy">各隊に目標を託し、動く戦線を見渡す。<br>突破口・補給路・予備の投入を決めよう。</p></div>
+<section class="doctrine-pick"><div class="section-label">01 / 作戦ドクトリン <small>勝ち筋を選ぶ</small></div><div class="doctrine-list" id="doctrine-options">
+<button class="doctrine" data-doc="BLITZ" aria-pressed="true"><span class="doctrine-icon"><svg class="icon"><use href="#i-bolt"/></svg></span><span><strong>電撃戦</strong><small>機甲3個・突破力＋25%。速度で包囲をつくる。</small></span><span class="choice-dot"></span></button>
+<button class="doctrine" data-doc="FIREPOWER" aria-pressed="false"><span class="doctrine-icon"><svg class="icon"><use href="#i-target"/></svg></span><span><strong>圧倒的火力</strong><small>重砲2個・多方向攻撃強化。要塞線を崩す。</small></span><span class="choice-dot"></span></button>
+<button class="doctrine" data-doc="INFILTRATION" aria-pressed="false"><span class="doctrine-icon"><svg class="icon"><use href="#i-route"/></svg></span><span><strong>浸透強襲</strong><small>歩兵・車両は森林移動減速なし。増援30 CP。</small></span><span class="choice-dot"></span></button>
+</div></section>
+<div class="deploy-actions"><button id="launch" class="primary"><span>作戦を開始する</span><svg class="icon"><use href="#i-arrow"/></svg></button><button id="continue" class="soft-btn" hidden>中断した作戦を再開</button><p class="deploy-note">任務を託してリアルタイム進行。いつでも停止・指示変更できます。</p></div></div>
+<div class="setup-main"><section class="map-stage"><div class="map-stage-head"><strong id="preview-title">平原の機動決戦</strong><span class="eyebrow">OPERATION PREVIEW</span></div><div class="preview-wrap"><canvas id="preview-canvas" aria-label="初期配置と地形のプレビュー"></canvas><span class="preview-corner">N ↑ &nbsp; / &nbsp; TACTICAL GRID</span><div class="preview-legend"><span><i class="dot"></i>自軍</span><span><i class="dot red"></i>敵軍</span><span><i class="dot neutral"></i>補給拠点</span></div></div><div class="map-stage-foot"><span><b>11</b> vs <b>11</b> 師団</span><span class="balance-check">✓ 全師団の初期補給を確保</span><span class="desktop-only">ROTATIONAL BALANCE</span></div></section>
+<section class="battlefield-select"><div class="section-label">02 / 戦場 <small>地形も配置も、作戦ごとに変化</small></div><div class="map-options" id="map-options"><button class="map-option" data-map="PLAINS" aria-pressed="true"><svg class="icon"><use href="#i-plain"/></svg><span>平原</span></button><button class="map-option" data-map="FOREST" aria-pressed="false"><svg class="icon"><use href="#i-forest"/></svg><span>森林</span></button><button class="map-option" data-map="CORRIDOR" aria-pressed="false"><svg class="icon"><use href="#i-mountain"/></svg><span>山岳回廊</span></button><button class="map-option" data-map="RANDOM" aria-pressed="false"><svg class="icon"><use href="#i-dice"/></svg><span>ランダム</span></button></div><p class="map-description" id="map-description"></p></section>
+<div class="setup-row"><section class="difficulty"><div class="section-label">03 / 敵司令官</div><div class="segmented" id="ai-options"><button data-ai="GUIDED" aria-pressed="true">練習</button><button data-ai="NORMAL" aria-pressed="false">標準</button><button class="master" data-ai="MASTER" aria-pressed="false">上級</button></div></section><section class="seed-control"><div class="section-label">作戦コード</div><div class="seed-input"><input id="seed" maxlength="24" aria-label="作戦コード。同じコードと設定で同じ初期配置になります" spellcheck="false" autocomplete="off"><button id="reroll" class="icon-btn" aria-label="新しい配置にする" title="配置を再生成"><svg class="icon"><use href="#i-dice"/></svg></button></div></section></div><p id="difficulty-note" class="tiny muted" style="margin-top:9px">敵味方の初期戦力は同等。戦術の違いで難易度が変わります。</p><section class="plan-pick"><div class="section-label">04 / 最初の作戦案 <small>各隊に任務を一括配備</small></div><div class="segmented"><button data-plan="NORTH" aria-pressed="false">北翼突破</button><button data-plan="BALANCED" aria-pressed="true">両翼展開</button><button data-plan="SOUTH" aria-pressed="false">南翼突破</button></div><p class="tiny muted" id="plan-description">主攻を片翼に集中。歩兵は中央、反対の翼は拠点、予備は補給路を守ります。</p></section>
+</div></main>
+<section class="strategy-strip" aria-label="基本戦術"><div class="strategy-item"><div class="strategy-number">01</div><div><strong>正面を、止める。</strong><p>歩兵で敵を攻撃し、足を止める。<br>その間に機動部隊を側面へ。</p></div></div><div class="strategy-item"><div class="strategy-number">02</div><div><strong>補給を、断つ。</strong><p>敵の背後を占領して首都から分断。<br>孤立した部隊は急速に弱体化する。</p></div></div><div class="strategy-item"><div class="strategy-number">03</div><div><strong>退路を、閉じる。</strong><p>退却できない敵を崩し、包囲殲滅。<br>獲得したCPで次の突破を起こす。</p></div></div></section>
+<section class="records"><span class="records-label">このマップ・難易度・ドクトリンの記録</span><div class="record-values"><div><small>最高作戦評価</small><b id="rec-rank">—</b></div><div><small>最速制圧</small><b id="rec-time">—</b></div><div><small>最高損害交換比</small><b id="rec-kd">—</b></div></div></section>
+</div></section>
+<section id="screen-game" class="screen" aria-label="戦場">
+<header class="battle-header"><div class="battle-brand"><button id="back-setup" class="icon-btn" aria-label="作戦設定へ戻る"><svg class="icon"><use href="#i-back"/></svg></button><div class="brand"><span class="brand-mark">ϟ</span>POCKET BLITZ</div></div><div class="battle-meta"><div class="stat"><small>作戦時間</small><span id="ui-time">D01 · 00:00</span></div><div class="stat cp"><small>指揮ポイント</small><span id="ui-cp">45</span> CP</div><div class="stat desktop-only"><small>敵 / 味方 損失</small><span id="ui-loss">0 / 0</span></div></div></header>
+<nav class="controlbar" aria-label="戦場の操作"><div class="control-left"><span id="phase-chip" class="chip green">指揮中</span><button id="pace-toggle" class="soft-btn" aria-pressed="false">▶ ×1</button><button id="auto-pause" class="soft-btn active" aria-pressed="true" title="首都の危機・複数部隊の補給途絶で自動停止">危機停止 ON</button></div><div class="control-right"><button id="supply-toggle" aria-label="補給線の表示切り替え" class="soft-btn active" aria-pressed="true"><svg class="icon"><use href="#i-route"/></svg><span class="label">補給線</span></button><button id="report-button" aria-label="戦果レポート" class="soft-btn"><svg class="icon"><use href="#i-report"/></svg><span class="label">戦果</span></button><button id="sound-toggle" class="icon-btn" aria-label="効果音を有効にする"><svg class="icon"><use href="#i-muted"/></svg></button><button class="icon-btn" data-help aria-label="遊び方"><svg class="icon"><use href="#i-help"/></svg></button></div></nav>
+<div class="ticker" aria-live="polite"><span class="eyebrow">FIELD REPORT</span><span id="field-message">任務を託し、動く戦線を見渡そう。いつでも指示を変更できます。</span></div>
+<div class="war-room"><main class="map-room"><div class="objective-bar"><span class="objective-title" id="mission-text">敵首都を補給下で24時間確保</span><span class="objective-progress"><span id="objective-label">中継拠点</span><span id="objective-lights" style="display:flex;gap:6px"></span></span></div><div id="canvas-wrap"><canvas id="game-canvas" tabindex="0" aria-label="戦場。味方を選択して目的地をタップ。ドラッグで進軍。空白のドラッグや2本指で地図を移動・拡大。"></canvas><div id="paused-label" class="paused-label">PAUSED · 作戦を考える</div><div id="map-hint" class="map-hint">歩兵で正面を押さえ、機甲部隊を側面へ。</div><div class="map-tools"><button id="zoom-out" class="icon-btn" aria-label="縮小"><svg class="icon"><use href="#i-minus"/></svg></button><button id="zoom-in" class="icon-btn" aria-label="拡大"><svg class="icon"><use href="#i-plus"/></svg></button><button id="zoom-fit" class="icon-btn" aria-label="地図全体を表示"><svg class="icon"><use href="#i-fit"/></svg></button></div></div><footer class="map-legend"><div class="group-controls" aria-label="部隊をまとめて選択"><button data-group="NORTH" aria-pressed="false">第1機動隊</button><button data-group="LINE" aria-pressed="false">歩兵・砲兵</button><button data-group="SOUTH" aria-pressed="false">第2機動隊</button><button data-group="RESERVE" aria-pressed="false">予備</button></div><span id="map-orientation" class="desktop-only">自軍：西 / 敵軍：東</span></footer></main>
+<aside class="command-panel" aria-label="部隊コマンド"><section class="unit-section"><div class="panel-heading"><span class="eyebrow">UNIT COMMAND</span><span id="unit-count">11 UNITS</span></div><div class="unit-header"><div id="unit-symbol" class="unit-symbol"></div><div class="unit-name-wrap"><h2 id="unit-name" class="unit-title">第1歩兵師団</h2><div id="unit-sub" class="unit-sub">歩兵 / 平原</div></div></div><div class="unit-status"><span id="unit-status">● 補給良好</span><span id="unit-route">命令待機</span></div><div class="bars"><div><div class="bar-label"><span>組織率</span><b id="unit-org">100%</b></div><div class="bar-track"><div id="org-fill" class="bar-fill"></div></div></div><div><div class="bar-label"><span>兵力</span><b id="unit-men">10,000</b></div><div class="bar-track"><div id="str-fill" class="bar-fill str"></div></div></div></div><div class="unit-controls"><button id="unit-prev" class="soft-btn" aria-label="前の部隊">◀</button><select id="mission-mode" aria-label="部隊の任務"><option value="CAPTURE">制圧</option><option value="FLANK">迂回</option><option value="DEFEND">防衛</option><option value="MANUAL">直接移動</option></select><button id="unit-halt" class="soft-btn">停止</button><button id="posture" class="soft-btn" aria-pressed="false" title="安全優先：組織率30%未満なら退路があると自動後退。強行：崩れるまで継戦。">安全優先</button><button id="waypoint" class="soft-btn btn-waypoint" aria-pressed="false">経由点</button><button id="unit-next" class="soft-btn" aria-label="次の部隊">▶</button></div></section>
+<section class="skill-section"><div class="eyebrow">COMMAND ABILITIES</div><div class="skill-grid"><button id="blitz" class="skill"><span class="skill-name"><svg class="icon"><use href="#i-bolt"/></svg>電撃戦</span><small id="blitz-cost">30 CP</small></button><button id="reinforce" class="skill reinforce"><span class="skill-name"><svg class="icon"><use href="#i-shield"/></svg>緊急増援</span><small id="reinforce-cost">45 CP</small></button></div><p class="skill-caption">電撃戦：36時間、機甲・車両の移動＋65%。<br>拠点確保と包囲殲滅でCPを獲得。</p><button id="roster-mobile" class="soft-btn mobile-only">部隊一覧 / 経由点</button></section>
+<section class="roster-section"><div class="roster-head"><span>配備部隊</span><span id="supply-count">11 / 11 補給中</span></div><div id="roster" class="roster-list"></div></section><div class="mini-objective"><strong>指揮官へのヒント</strong><span id="tactical-tip">砲兵を攻撃に加えると、森林や都市の地形防御を無効化できます。</span></div></aside></div>
+<div class="execution-dock"><div class="turn-copy"><strong id="command-title">任務を配備済み</strong><span id="command-detail">目標確保・防衛・回復後の復帰を部隊に任せます。</span></div><button id="undo-order" class="soft-btn" disabled title="一時停止中の指示を1つ戻す">↶ 戻す</button><button id="battle-plan" class="soft-btn">作戦案</button><button id="run-toggle" class="primary">▶ 作戦開始</button></div>
+</section>
+<section id="screen-report" class="screen" aria-label="戦果レポート"><article class="report"><div class="report-top"><span class="eyebrow">AFTER ACTION REPORT</span><span id="report-code" class="chip">OPERATION</span></div><h1 id="report-title">OPERATION COMPLETE</h1><p id="report-subtitle" class="report-subtitle"></p><div class="rank-row"><span id="report-rank" class="rank">S</span><div id="report-feedback" class="rank-feedback"></div></div><div class="kpis"><div class="kpi"><small>作戦経過時間</small><strong id="kpi-time"></strong><span id="kpi-time-detail"></span></div><div class="kpi"><small>損害交換比</small><strong id="kpi-kd"></strong><span id="kpi-loss"></span></div><div class="kpi"><small>包囲殲滅率</small><strong id="kpi-pocket"></strong><span id="kpi-pocket-men"></span></div><div class="kpi"><small>最大ポケット撃破</small><strong id="kpi-max"></strong><span>同じ孤立地域での累計兵力</span></div></div><div id="report-score" class="report-score"></div><div class="report-actions"><button id="report-resume" class="primary">戦場へ戻る <svg class="icon"><use href="#i-arrow"/></svg></button><button id="replay" class="soft-btn">同じ戦場で再戦</button><button id="new-battle" class="soft-btn">新しい作戦へ</button></div><p class="report-footer">同じ作戦コード・設定なら、同じ地形と初期配置で再挑戦できます。</p></article></section>
+<dialog id="help-dialog"><div class="dialog-head"><h2>任務を託し、戦線を読む。</h2><button class="icon-btn" data-close aria-label="閉じる">×</button></div><div class="help-step"><h3>1. 最初に作戦を決める</h3><p>北翼突破・両翼展開・南翼突破から選ぶと、機動隊・歩兵・予備に任務が入ります。「作戦開始」でリアルタイムに進行。時間ごとの強制停止はありません。各隊の任務はいつでも上書きできます。</p></div><div class="help-step"><h3>2. 各隊に目標を託す</h3><p>地図下の隊ボタンを選び、「制圧・迂回・防衛」を選んで目標をタップ。制圧は目標を取り、その周辺を防衛します。迂回は敵のいるマスを避けます。防衛は指定地点の周辺に対応し、遠い敵を追いません。直接移動では細かな経路を自分で指定できます。</p></div><div class="help-step"><h3>3. 判断が必要なときに介入</h3><p>部隊は組織率が下がると安全な場所へ後退し、回復後に元の任務へ復帰します。補給切れなら補給圏への退避を優先。補給路を誰が奪回するか、予備をどこへ送るかは指揮官の判断です。任務にない目標へ勝手に進んだり、CPを自動で使ったりはしません。</p></div><div class="help-step"><h3>動く戦況を見届ける</h3><p>標準速度では1時間が実時間0.7秒。平地の機甲は約8秒、歩兵は約16秒で1マス進みます。×2も選べます。「危機停止」は首都に敵が迫る、または2部隊以上の補給が切れると一時停止します。OFFにもできます。単なる移動完了や日付変更では止まりません。</p></div><div class="help-step"><h3>包囲を決める</h3><p>歩兵で敵の移動を拘束し、機動隊を迂回させ、首都への領地接続を切ります。補給途絶は攻撃・防御・速度を30%へ低下。さらに退路を閉じてORGを0にすると包囲壊滅です。重砲は攻撃参加で地形防御を無効化します。敵首都を補給下で24時間守るか、全敵師団を倒せば勝利です。</p></div><div class="help-step"><h3>考える時間は自分で取れる</h3><p>いつでも一時停止して指示できます。停止中の指示は「戻す」で取り消し可能。進行を再開すると取り消し履歴は確定します。練習モードは敵の現在の予定ルートを表示し、最初の48時間は敵が守備を続けます。予定は敵の次の判断で変わります。</p></div><p class="help-keys"><kbd>Space</kbd> 停止 / 再開　<kbd>Z</kbd> 停止中の指示を戻す　<kbd>X</kbd> 任務解除・停止　<kbd>S</kbd> 補給線<br>Shift＋目標 / 「経由点」：直接移動のルート追加。空白のドラッグで地図移動、2本指で拡大。画面を離れると自動停止します。</p></dialog>
+<dialog id="plan-dialog"><div class="dialog-head"><h2>主攻を決める</h2><button class="icon-btn" data-close aria-label="閉じる">×</button></div><p class="tiny muted">選ぶと全部隊の任務を更新します。各隊の目標は、あとから個別に変えられます。</p><div class="plan-cards"><button data-live-plan="NORTH"><b>北翼突破</b><small>第1機動隊は敵の背後へ迂回。第2は南の拠点、歩兵は中央、予備は補給路を守る。</small></button><button data-live-plan="BALANCED"><b>両翼展開</b><small>機動隊で両翼の中継拠点を確保。戦況を見て、どちらを主攻にするか決める。</small></button><button data-live-plan="SOUTH"><b>南翼突破</b><small>第2機動隊は敵の背後へ迂回。第1は北の拠点、歩兵は中央、予備は補給路を守る。</small></button></div></dialog>
+<dialog id="roster-dialog"><div class="dialog-head"><h2>配備部隊</h2><button class="icon-btn" data-close aria-label="閉じる"><svg class="icon"><use href="#i-close"/></svg></button></div><button id="mobile-waypoint" class="soft-btn" aria-pressed="false" style="width:100%;margin-bottom:14px">経由点を追加：OFF</button><div id="mobile-roster" class="roster-list"></div></dialog>
+<div id="toast" class="toast" role="status"></div>
+<!-- ENGINE_START -->
+<script id="engine">
+/** POCKET BLITZ v6 — continuous real-time with persistent commander missions; deterministic, DOM-free simulation.
+ * Order: snapshot intentions → movement → simultaneous damage → retreat → supply → victory.
+ * A cell is addressed by r * COLS + c; paths contain cell IDs, never stale object references.
+ */
+const PocketBlitz = (() => {
+  'use strict';
+  const COLS=13, ROWS=9, R=32, DX=Math.sqrt(3)*R, W=746, H=464, CAPTURE_HOURS=24;
+  const MISSION_TYPES={CAPTURE:'制圧',FLANK:'迂回',DEFEND:'防衛'};
+  const PLANS={NORTH:'北翼突破',BALANCED:'両翼展開',SOUTH:'南翼突破'};
+  const GROUPS={NORTH:'第1機動隊',LINE:'歩兵・砲兵隊',SOUTH:'第2機動隊',RESERVE:'予備隊',HQ:'首都守備隊'};
+  const TEAMS=['ALLY','ENEMY'], other=t=>t==='ALLY'?'ENEMY':'ALLY';
+  const T={
+    PLAIN:{name:'平地',cost:1,def:0,armor:1.2,color:'#263832'},
+    FOREST:{name:'森林',cost:1.5,def:.3,armor:.72,color:'#1e332b'},
+    URBAN:{name:'都市',cost:1,def:.4,armor:.76,color:'#3c4030'},
+    CAPITAL:{name:'首都',cost:1,def:.5,armor:.72,color:'#3e4134'},
+    MOUNTAIN:{name:'山岳',cost:Infinity,def:0,armor:0,color:'#182429'}
+  };
+  const U={
+    INF:{name:'歩兵',men:10000,atk:14,def:24,brk:12,spd:3.6},
+    ARM:{name:'機甲',men:8000,atk:30,def:18,brk:34,spd:6.8},
+    MOT:{name:'自動車化',men:9000,atk:18,def:20,brk:20,spd:8},
+    SPG:{name:'自走重砲',men:7000,atk:34,def:14,brk:24,spd:4.8}
+  };
+  const MAPS={PLAINS:'平原の機動決戦',FOREST:'森林要塞ライン',CORRIDOR:'双子の山岳回廊',RANDOM:'未知の戦域'};
+  const DOCS={BLITZ:'電撃戦',FIREPOWER:'圧倒的火力',INFILTRATION:'浸透強襲'};
+  const id=(c,r)=>r*COLS+c, at=(s,c,r)=>s.cells[id(c,r)];
+  const home=t=>id(t==='ALLY'?1:11,4), loc=u=>id(u.c,u.r);
+  const pos=h=>({x:40+(h.c+(h.r&1)/2)*DX,y:40+h.r*R*1.5});
+  const mirror=h=>({c:12-h.c-(h.r&1),r:8-h.r});
+  const pass=h=>!!h&&!h.outside&&h.terrain!=='MOUNTAIN';
+  const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+  function hash(str){let v=2166136261;for(const ch of String(str)){v^=ch.charCodeAt(0);v=Math.imul(v,16777619);}return v>>>0;}
+  function random(seed){let a=seed>>>0;return()=>{a+=0x6D2B79F5;let t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};}
+  function shuffled(a,rng){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+  function neighbors(s,h){
+    const dirs=(h.r&1)?[[1,0],[1,1],[0,1],[-1,0],[0,-1],[1,-1]]:[[1,0],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1]];
+    return dirs.map(([x,y])=>[h.c+x,h.r+y]).filter(([c,r])=>c>=0&&c<COLS&&r>=0&&r<ROWS).map(([c,r])=>at(s,c,r)).filter(h=>!h.outside);
+  }
+  function distance(a,b){const aq=a.c-(a.r-(a.r&1))/2,bq=b.c-(b.r-(b.r&1))/2,dq=aq-bq,dr=a.r-b.r;return Math.max(Math.abs(dq),Math.abs(dr),Math.abs(dq+dr));}
+  const unitAt=(s,h)=>s.units.find(u=>loc(u)===h.id);
+  const unitById=(s,n)=>s.units.find(u=>u.id===n);
+  function addEvent(s,text,type='info',cellId=null,team=null){s.events.push({seq:++s.eventSeq,tick:s.tick,text,type,cell:cellId,team});if(s.events.length>60)s.events.shift();}
+  function makeUnit(s,team,type,h,name){
+    const u={id:s.nextUid++,team,type,name,c:h.c,r:h.r,str:100,org:100,path:[],move:0,attack:null,pinned:false,supplied:true,cutHours:0,pocket:0,rest:0,wait:0,group:'RESERVE',posture:'SAFE',mission:null,recovering:false};
+    s.units.push(u);s.received[team]+=U[type].men;return u;
+  }
+  function flood(s,team,blocked=-1,ignoreOwner=false){
+    const start=s.cells[home(team)],seen=new Set();
+    if(!pass(start)||start.id===blocked||(!ignoreOwner&&start.owner!==team))return seen;
+    const q=[start];seen.add(start.id);
+    for(let i=0;i<q.length;i++)for(const n of neighbors(s,q[i]))if(pass(n)&&n.id!==blocked&&!seen.has(n.id)&&(ignoreOwner||n.owner===team)){seen.add(n.id);q.push(n);}
+    return seen;
+  }
+  function scenario(config){
+    const cfg={map:MAPS[config.map]?config.map:'PLAINS',doc:DOCS[config.doc]?config.doc:'BLITZ',ai:['GUIDED','NORMAL','MASTER'].includes(config.ai)?config.ai:'GUIDED',plan:PLANS[config.plan]?config.plan:'BALANCED',seed:String(config.seed||'BLITZ').slice(0,24)};
+    const rng=random(hash(cfg.seed+'|'+cfg.map)),s={version:6,config:cfg,cells:[],grid:[],units:[],tick:0,cp:{ALLY:45,ENEMY:45},blitz:{ALLY:0,ENEMY:0},reinf:{ALLY:0,ENEMY:0},lastReinf:{ALLY:-100,ENEMY:-100},nextUid:1,nextPocket:1,pockets:{},received:{ALLY:0,ENEMY:0},loss:{ALLY:0,ENEMY:0},kpi:{combat:0,pocket:0,maxPocket:0,shattered:0},awards:[],events:[],eventSeq:0,finished:false,winner:null,reason:'',holds:{ALLY:0,ENEMY:0},edges:{ALLY:[],ENEMY:[]},bubbles:[],markers:[],revision:0,cache:{},aiMessage:'',missions:[],nextMission:1,command:{aiPlans:0,nextAI:12,nextMission:6,autoPause:true,pauseRequest:null,capitalAlert:false,cutIds:[],alertCooldown:-100}};
+    for(let r=0;r<ROWS;r++){
+      const row=[];
+      for(let c=0;c<COLS;c++){
+        // The four extra cells on odd rows are outside the rotationally symmetric board.
+        const x=c+(r&1)/2-6,outside=!!(r&1)&&c===12;
+        const h={id:id(c,r),c,r,outside,terrain:'PLAIN',owner:outside?null:x<=-1?'ALLY':x>=1?'ENEMY':null,initialOwner:null,capitalFor:null,relay:false,rail:false,supply:{ALLY:false,ENEMY:false},parent:{ALLY:null,ENEMY:null},flow:{ALLY:0,ENEMY:0}};
+        h.initialOwner=h.owner;s.cells.push(h);row.push(h);
+      }s.grid.push(row);
+    }
+    const paired=(h,t)=>{h.terrain=t;const m=mirror(h);at(s,m.c,m.r).terrain=t;};
+    for(const h of s.cells){
+      if(h.outside)continue;const m=mirror(h);if(h.id>id(m.c,m.r))continue;
+      const roll=rng(),front=h.c>=3&&h.c<=9;
+      let t='PLAIN';
+      if(cfg.map==='PLAINS')t=roll<.18?'FOREST':'PLAIN';
+      if(cfg.map==='FOREST')t=roll<(front?.56:.25)?'FOREST':'PLAIN';
+      if(cfg.map==='RANDOM')t=roll<.14&&front?'MOUNTAIN':roll<.43?'FOREST':'PLAIN';
+      if(cfg.map==='CORRIDOR')t=front&&(h.r===2||h.r===3||h.r===5||h.r===6)&&roll<.66?'MOUNTAIN':roll<.82?'FOREST':'PLAIN';
+      // Two flanking lanes and a central connection always remain passable.
+      if((h.r===1||h.r===4||h.r===7)&&t==='MOUNTAIN')t='PLAIN';
+      if(cfg.map==='PLAINS'&&(h.r===1||h.r===7))t='PLAIN';
+      paired(h,t);
+    }
+    for(const team of TEAMS){const h=s.cells[home(team)];h.terrain='CAPITAL';h.capitalFor=team;h.rail=true;}
+    for(const h of [at(s,3+Math.floor(rng()*2),2),at(s,3,5+Math.floor(rng()*2))])paired(h,'URBAN');
+    for(const h of [at(s,5,1),at(s,6,4),at(s,6,7)]){h.terrain='URBAN';h.relay=true;h.owner=null;h.initialOwner=null;}
+    // Remove isolated terrain islands rather than silently changing terrain underneath a unit.
+    const connected=flood(s,'ALLY',-1,true);
+    for(const h of s.cells)if(pass(h)&&!connected.has(h.id))paired(h,'MOUNTAIN');
+    for(let c=0;c<COLS;c++)at(s,c,4).rail=pass(at(s,c,4));
+    for(const h of s.cells.filter(h=>h.terrain==='URBAN')){
+      const team=h.c+(h.r&1)/2<6?'ALLY':'ENEMY';
+      const route=findPath(s,s.cells[home(team)],h,null,{terrainOnly:true});
+      for(const n of route)s.cells[n].rail=true;
+      const m=mirror(h),mh=at(s,m.c,m.r);mh.rail=true;
+    }
+    // Mirror railway paths too: tie-breaking in shortest paths must not create a side advantage.
+    for(const h of s.cells.filter(h=>h.rail&&!h.outside)){const m=mirror(h);at(s,m.c,m.r).rail=true;}
+    const available=s.cells.filter(h=>pass(h)&&h.owner==='ALLY'&&h.c>=1&&h.c<=4),used=new Set([home('ALLY')]);
+    const choose=(rows,front=false)=>{
+      let pool=available.filter(h=>!used.has(h.id)&&rows.includes(h.r));
+      if(!pool.length)pool=available.filter(h=>!used.has(h.id));
+      const ranked=pool.map(h=>({h,score:(front?Math.abs(4-h.c):Math.abs(3-h.c))*2+rng()*2})).sort((a,b)=>a.score-b.score);
+      const h=ranked[0]?.h;if(!h)throw Error('Deployment area exhausted');used.add(h.id);return h;
+    };
+    const roster=[{type:'INF',h:choose([2,3],true)},{type:'INF',h:choose([4],true)},{type:'INF',h:choose([5,6],true)},{type:'INF',h:choose(shuffled([2,3,5,6],rng),true)},{type:'INF',h:s.cells[home('ALLY')]}];
+    for(const rows of [[0,1,2],[6,7,8]]){roster.push({type:'ARM',h:choose(rows,true)});roster.push({type:'MOT',h:choose(rows)});}
+    roster.push({type:cfg.doc==='FIREPOWER'?'SPG':'ARM',h:choose([3,4,5])});
+    roster.push({type:'SPG',h:choose([2,3,5,6])});
+    const typeCounts={};
+    const roles=['LINE','LINE','LINE','LINE','HQ','NORTH','NORTH','SOUTH','SOUTH','RESERVE','LINE'];
+    for(const [index,{type,h}] of roster.entries()){
+      typeCounts[type]=(typeCounts[type]||0)+1;const name=h.id===home('ALLY')?'首都守備師団':`第${typeCounts[type]}${U[type].name}師団`;
+      makeUnit(s,'ALLY',type,h,name).group=roles[index];const m=mirror(h);makeUnit(s,'ENEMY',type,at(s,m.c,m.r),`敵${name}`).group=roles[index];
+    }
+    refreshSupply(s,false);
+    if(s.units.some(u=>!u.supplied))throw Error('Initial supply invariant failed');
+    applyBattlePlan(s,cfg.plan);
+    addEvent(s,'作戦案を配備済み。進行中も任務を変更できます。部隊は目標の確保・防衛を続けます。','info');
+    return s;
+  }
+  function movementCost(s,u,h){return s.config.doc==='INFILTRATION'&&u&&['INF','MOT'].includes(u.type)&&h.terrain==='FOREST'?1:T[h.terrain].cost;}
+  /** Dijkstra: terrain-aware, with soft congestion and enemy avoidance costs. */
+  function findPath(s,start,target,u,options={}){
+    if(!start||!pass(target)||start.id===target.id)return[];
+    const dist=new Map([[start.id,0]]),prev=new Map(),open=[start.id],closed=new Set(),occupancy=new Map(s.units.map(x=>[loc(x),x]));
+    while(open.length){
+      open.sort((a,b)=>dist.get(a)-dist.get(b)||a-b);const cid=open.shift();if(closed.has(cid))continue;closed.add(cid);
+      if(cid===target.id){const path=[];let cur=cid;while(cur!==start.id){path.unshift(cur);cur=prev.get(cur);}return path;}
+      for(const nb of neighbors(s,s.cells[cid])){
+        if(!pass(nb)||closed.has(nb.id))continue;
+        const occ=occupancy.get(nb.id),foe=occ&&u&&occ.team!==u.team;
+        if(options.ownedOnly&&u&&nb.owner!==u.team)continue;
+        if(options.avoidEnemy&&foe)continue;
+        let cost=options.terrainOnly?1:movementCost(s,u,nb);
+        if(!options.terrainOnly&&occ&&occ!==u&&nb.id!==target.id)cost+=foe?14:(occ.path.length?2.5:7);
+        const next=dist.get(cid)+cost;
+        if(next<(dist.get(nb.id)??Infinity)){dist.set(nb.id,next);prev.set(nb.id,cid);open.push(nb.id);}
+      }
+    }return[];
+  }
+  function refreshSupply(s,notify=true){
+    for(const team of TEAMS){
+      for(const h of s.cells){h.supply[team]=false;h.parent[team]=null;h.flow[team]=0;}
+      const cap=s.cells[home(team)],q=[];
+      if(cap.owner===team){cap.supply[team]=true;q.push(cap);}
+      for(let i=0;i<q.length;i++)for(const nb of neighbors(s,q[i]).sort((a,b)=>(+b.rail)-(+a.rail)||a.id-b.id)){
+        if(pass(nb)&&nb.owner===team&&!nb.supply[team]){nb.supply[team]=true;nb.parent[team]=q[i].id;q.push(nb);}
+      }
+      const edges=new Map();
+      for(const u of s.units.filter(u=>u.team===team)){
+        let h=s.cells[loc(u)];const was=u.supplied;u.supplied=h.supply[team];
+        if(was&&!u.supplied&&notify)addEvent(s,`${u.name}の補給途絶。攻撃・防御・移動が30%に低下。`,'cut',h.id);
+        if(!was&&u.supplied&&notify)addEvent(s,`${u.name}の補給が回復。`,'supply',h.id);
+        if(u.supplied){u.cutHours=0;u.pocket=0;}
+        if(!u.supplied)continue;
+        while(h.parent[team]!==null){h.flow[team]++;const par=h.parent[team],key=par+'>'+h.id,e=edges.get(key)||{from:par,to:h.id,flow:0};e.flow++;edges.set(key,e);h=s.cells[par];}
+      }s.edges[team]=[...edges.values()];
+      const seen=new Set();
+      for(const h of s.cells){
+        if(!pass(h)||h.owner!==team||h.supply[team]||seen.has(h.id))continue;
+        const region=[h];seen.add(h.id);
+        for(let i=0;i<region.length;i++)for(const nb of neighbors(s,region[i]))if(pass(nb)&&nb.owner===team&&!seen.has(nb.id)&&!nb.supply[team]){seen.add(nb.id);region.push(nb);}
+        const ids=new Set(region.map(x=>x.id)),trapped=s.units.filter(u=>u.team===team&&ids.has(loc(u)));if(!trapped.length)continue;
+        const previous=[...new Set(trapped.map(u=>u.pocket).filter(n=>n&&s.pockets[n]))].sort((a,b)=>a-b);
+        const tag=previous[0]||s.nextPocket++;
+        if(!s.pockets[tag])s.pockets[tag]={team,total:0};
+        for(const old of previous.slice(1)){s.pockets[tag].total+=s.pockets[old].total;delete s.pockets[old];for(const u of s.units)if(u.pocket===old)u.pocket=tag;}
+        for(const u of trapped)u.pocket=tag;
+      }
+    }
+    s.revision++;s.cache={};
+  }
+  /** A displayed critical tile is a real cut vertex, not just a busy BFS tree edge. */
+  function criticalTiles(s,team){
+    if(s.cache[team])return s.cache[team];
+    const supplied=s.units.filter(u=>u.team===team&&u.supplied),out=[];
+    for(const h of s.cells){
+      if(h.owner!==team||!h.supply[team]||!h.flow[team]||h.capitalFor)continue;
+      const reachable=flood(s,team,h.id),affected=supplied.filter(u=>!reachable.has(loc(u))&&loc(u)!==h.id);
+      if(affected.length)out.push({cell:h.id,count:affected.length,ids:affected.map(u=>u.id)});
+    }return s.cache[team]=out.sort((a,b)=>b.count-a.count||a.cell-b.cell);
+  }
+  function order(s,uid,targetId,append=false){
+    const u=unitById(s,uid),h=s.cells[targetId];
+    if(s.finished||!u||!pass(h))return{ok:false,reason:'山岳・盤外には進軍できません。'};
+    const start=append&&u.path.length?s.cells[u.path.at(-1)]:s.cells[loc(u)];
+    if(start.id===targetId)return{ok:false,reason:'現在地と同じです。'};
+    const path=findPath(s,start,h,u);
+    if(!path.length)return{ok:false,reason:'そこへ通じる経路がありません。'};
+    if(!append&&u.path[0]!==path[0])u.move=0;
+    detachMission(s,u);u.path=append?[...u.path,...path]:path;u.attack=null;u.wait=0;
+    return{ok:true,path:u.path};
+  }
+  function halt(s,uid,clearMission=true){const u=unitById(s,uid);if(!u)return;if(clearMission)detachMission(s,u);u.path=[];u.attack=null;u.move=0;u.wait=0;}
+  function speed(s,u,h){let n=U[u.type].spd*1.25/movementCost(s,u,h);if(!u.supplied)n*=.3;if(s.blitz[u.team]>0&&['ARM','MOT'].includes(u.type))n*=1.65;return n;}
+  function groupOrder(s,uids,targetId,append=false){
+    if(s.finished)return{ok:false,reason:'作戦は終了しています。'};
+    const target=s.cells[targetId],members=uids.map(n=>unitById(s,n)).filter(u=>u&&u.team==='ALLY');
+    if(!pass(target)||!members.length)return{ok:false,reason:'進入できる目標を選んでください。'};
+    const targetUnit=unitAt(s,target),assault=targetUnit&&targetUnit.team!=='ALLY',memberIds=new Set(members.map(u=>u.id)),taken=new Set();
+    let pool=assault?neighbors(s,target):[target,...neighbors(s,target)];
+    if(!assault)pool.push(...neighbors(s,target).flatMap(h=>neighbors(s,h)));
+    pool=[...new Map(pool.map(h=>[h.id,h])).values()].filter(h=>pass(h)&&(!unitAt(s,h)||memberIds.has(unitAt(s,h).id)));
+    let count=0;
+    for(const u of [...members].sort((a,b)=>distance(a,target)-distance(b,target)||U[b.type].spd-U[a.type].spd)){
+      const start=append&&u.path.length?s.cells[u.path.at(-1)]:s.cells[loc(u)];
+      const choices=pool.filter(h=>!taken.has(h.id)).map(h=>{const p=findPath(s,start,h,u);return{h,p,valid:p.length>0||start.id===h.id,cost:p.length+distance(h,target)*2};}).filter(x=>x.valid).sort((a,b)=>a.cost-b.cost||a.h.id-b.h.id);
+      const choice=choices[0];if(!choice)continue;let route=choice.p;
+      if(assault)route=[...route,target.id];
+      const full=append?[...u.path,...route]:route;
+      if(u.path[0]!==full[0])u.move=0;u.path=full;u.wait=0;u.attack=null;taken.add(choice.h.id);count++;
+    }
+    return count?{ok:true,count,assault}:{ok:false,reason:'部隊を展開できる場所がありません。別の目標を選んでください。'};
+  }
+  // Missions express a player's objective. Local commanders choose routes and safe recovery,
+  // but never choose a new strategic target or spend CP on the player's behalf.
+  function detachMission(s,u){
+    if(!u.mission)return;const old=s.missions.find(m=>m.id===u.mission);
+    if(old)old.uids=old.uids.filter(n=>n!==u.id);u.mission=null;s.missions=s.missions.filter(m=>m.uids.length);
+  }
+  function missionRoute(s,u,target,avoid=false){
+    if(loc(u)===target.id){halt(s,u.id,false);return true;}
+    const route=findPath(s,s.cells[loc(u)],target,u,{avoidEnemy:avoid});
+    if(!route.length){halt(s,u.id,false);return false;}
+    if(u.path[0]!==route[0])u.move=0;u.path=route;u.wait=0;return true;
+  }
+  function assignMission(s,uids,kind,targetId){
+    const target=s.cells[targetId],members=uids.map(n=>unitById(s,n)).filter(u=>u&&u.team==='ALLY');
+    if(s.finished||!MISSION_TYPES[kind]||!pass(target)||!members.length)return{ok:false,reason:'任務と進入できる目標を選んでください。'};
+    for(const u of members){detachMission(s,u);halt(s,u.id,false);u.defendingMission=false;}
+    const m={id:s.nextMission++,kind,target:targetId,uids:members.map(u=>u.id),slots:{},status:'進行',secured:false,label:members.length===1?members[0].name:GROUPS[members[0].group]||'選択部隊'};
+    s.missions.push(m);for(const u of members)u.mission=m.id;
+    planMission(s,m);return{ok:true,count:members.length,mission:m};
+  }
+  function missionRecover(s,u,m){
+    if(u.rest>0){m.status='再編成';return true;}
+    if(u.org<(u.posture==='PRESS'?8:30))u.recovering=true;
+    if(u.recovering&&u.org>=60&&u.supplied)u.recovering=false;
+    if(!u.supplied||u.recovering){
+      m.status=!u.supplied?'補給復旧を優先':'回復待ち';
+      const safe=s.cells.filter(h=>h.owner===u.team&&h.supply[u.team]&&pass(h)&&(!unitAt(s,h)||loc(u)===h.id));
+      if(u.supplied&&!u.pinned){halt(s,u.id,false);return true;}
+      safe.sort((a,b)=>distance(u,a)-distance(u,b)||distance(a,s.cells[home(u.team)])-distance(b,s.cells[home(u.team)]));
+      if(!safe.length)halt(s,u.id,false);
+      for(const h of safe){if(missionRoute(s,u,h,true))break;}
+      return true;
+    }
+    return false;
+  }
+  function planMission(s,m){
+    const members=m.uids.map(n=>unitById(s,n)).filter(u=>u&&u.mission===m.id),target=s.cells[m.target];
+    m.uids=members.map(u=>u.id);if(!members.length)return;
+    const occupant=unitAt(s,target),owned=target.owner==='ALLY',nearby=members.some(u=>distance(u,target)<=1);
+    if(owned&&nearby&&!m.secured){m.secured=true;addEvent(s,`${m.label}：目標を確保。周辺の防衛を継続。`,'mission',target.id);}
+    if(!owned)m.secured=false;
+    m.status=m.secured?'確保・防衛中':m.kind==='DEFEND'?'防衛地点へ':m.kind==='FLANK'?'敵を避けて進軍':'制圧へ進軍';
+    const available=[];
+    for(const u of members){u.defendingMission=false;if(missionRecover(s,u,m))continue;available.push(u);}
+    if(!available.length)return;
+    const busy=new Set();
+    // A local commander helps adjacent comrades instead of staring at a distant waypoint.
+    // This reaction stays within the assigned area; flanking units only respond to an attack.
+    const threats=s.units.filter(e=>e.team==='ENEMY'&&available.some(u=>distance(u,e)===1)&&
+      (m.kind==='FLANK'&&!m.secured?members.some(u=>e.path[0]===loc(u)):distance(e,target)<=2||members.some(u=>e.path[0]===loc(u))));
+    threats.sort((a,b)=>(+a.supplied)-(+b.supplied)||a.org-b.org||a.id-b.id);
+    for(const e of threats){
+      const responders=available.filter(u=>!busy.has(u.id)&&distance(u,e)===1&&u.org>35);
+      if(!responders.length)continue;
+      const pressed=responders.some(u=>e.path[0]===loc(u));
+      const power=responders.reduce((n,u)=>n+attackPower(s,u,s.cells[loc(e)]),0)*(1+.3*(responders.length-1));
+      if(!pressed&&power/Math.max(2,defensePower(s,e,responders.some(u=>u.type==='SPG')))<.95)continue;
+      for(const u of responders){u.defendingMission=true;missionRoute(s,u,s.cells[loc(e)]);busy.add(u.id);}m.status='周辺の味方と交戦';
+    }
+    const hostile=occupant&&occupant.team!=='ALLY',assault=hostile&&m.kind!=='FLANK';
+    if(assault){
+      const ids=available.filter(u=>!busy.has(u.id)&&(!u.pinned||u.attack===occupant.id)).map(u=>u.id);
+      if(ids.length)groupOrder(s,ids,target.id);m.status='目標を攻撃中';return;
+    }
+    const guarding=m.kind==='DEFEND'||m.secured;
+    let candidates=[target,...neighbors(s,target)];
+    if(available.length>candidates.length)candidates.push(...neighbors(s,target).flatMap(h=>neighbors(s,h)));
+    // Keep the rear approach empty as a retreat lane. Crowding all friendly exits would
+    // turn a successful capture into an accidental no-retreat destruction.
+    const rear=members.length>1?neighbors(s,target).filter(h=>pass(h)&&h.owner==='ALLY'&&(!unitAt(s,h)||members.includes(unitAt(s,h)))).sort((a,b)=>distance(a,s.cells[home('ALLY')])-distance(b,s.cells[home('ALLY')])||a.id-b.id)[0]:null;
+    candidates=[...new Map(candidates.map(h=>[h.id,h])).values()].filter(h=>pass(h)&&h.id!==rear?.id&&(!unitAt(s,h)||available.includes(unitAt(s,h)))&&(!guarding||m.kind!=='DEFEND'||h.owner!=='ENEMY'||h.id===target.id));
+    const taken=new Set(),sorted=[...available].sort((a,b)=>distance(a,target)-distance(b,target)||a.id-b.id);
+    for(const u of sorted){
+      if(busy.has(u.id))continue;
+      if(u.pinned){m.status='交戦中';continue;}
+      if(guarding&&u.org>=55){
+        const threats=neighbors(s,s.cells[loc(u)]).map(h=>unitAt(s,h)).filter(e=>e&&e.team!=='ALLY'&&distance(e,target)<=1);
+        const threat=threats.sort((a,b)=>a.org-b.org)[0];
+        if(threat){missionRoute(s,u,s.cells[loc(threat)]);m.status='防衛戦闘';continue;}
+      }
+      // Retain the previous station unless occupied or invalid; avoid order churn and lane swaps.
+      let station=candidates.find(h=>h.id===m.slots[u.id]&&!taken.has(h.id));
+      if(!taken.has(target.id)&&candidates.includes(target)&&(loc(u)===target.id||findPath(s,s.cells[loc(u)],target,u,{avoidEnemy:m.kind==='FLANK'}).length))station=target;
+      if(!station){
+        const ranked=candidates.filter(h=>!taken.has(h.id)).map(h=>{const path=findPath(s,s.cells[loc(u)],h,u,{avoidEnemy:m.kind==='FLANK'});return{h,path,cost:path.length+distance(h,target)*3,valid:path.length>0||loc(u)===h.id};}).filter(x=>x.valid).sort((a,b)=>a.cost-b.cost||a.h.id-b.h.id);
+        station=ranked[0]?.h;
+      }
+      if(!station){halt(s,u.id,false);m.status=m.secured?'確保・予備待機':m.kind==='FLANK'?'迂回路を待機':'展開場所を待機';continue;}
+      taken.add(station.id);m.slots[u.id]=station.id;
+      if(!missionRoute(s,u,station,m.kind==='FLANK'))m.status='経路を待機';
+    }
+  }
+  function updateMissions(s){for(const m of [...s.missions])planMission(s,m);s.missions=s.missions.filter(m=>m.uids.length);}
+  function applyBattlePlan(s,plan){
+    if(s.finished||!PLANS[plan])return false;s.config.plan=plan;
+    const relayN=s.cells.find(h=>h.relay&&h.r<4),relayS=s.cells.find(h=>h.relay&&h.r>4),mid=s.cells.find(h=>h.relay&&h.r===4);
+    const goal=(c,r)=>s.cells.filter(pass).sort((a,b)=>distance(a,{c,r})-distance(b,{c,r})||a.id-b.id)[0].id;
+    const orders={
+      NORTH:plan==='NORTH'?['FLANK',goal(8,1)]:['CAPTURE',relayN.id],
+      SOUTH:plan==='SOUTH'?['FLANK',goal(8,7)]:['CAPTURE',relayS.id],
+      LINE:['CAPTURE',mid.id],RESERVE:['DEFEND',goal(3,4)],HQ:['DEFEND',home('ALLY')]
+    };
+    for(const [group,[kind,target]] of Object.entries(orders)){
+      const uu=s.units.filter(u=>u.team==='ALLY'&&u.group===group);if(uu.length)assignMission(s,uu.map(u=>u.id),kind,target);
+    }
+    addEvent(s,`${PLANS[plan]}の作戦案を配備。各隊が目標の確保・防衛を続けます。`,'plan');return true;
+  }
+  function forecast(s,uids,targetId){
+    const h=s.cells[targetId],d=h&&unitAt(s,h);if(!d||d.team==='ALLY')return null;
+    const participants=s.units.filter(u=>u.team==='ALLY'&&(uids.includes(u.id)||u.path.at(-1)===targetId));
+    const siege=participants.some(u=>u.type==='SPG'),directions=new Set(participants.map(u=>u.path.at(-1)===targetId&&u.path.length>1?u.path.at(-2):loc(u))).size;
+    const power=participants.reduce((n,u)=>n+attackPower(s,u,h),0)*(1+Math.max(0,directions-1)*(s.config.doc==='FIREPOWER'?.38:.3));
+    const ratio=power/Math.max(2,defensePower(s,d,siege)),label=ratio>=1.4?'優勢':ratio>=.85?'拮抗':'不利';
+    const reason=!siege&&T[h.terrain].def>0?'重砲を加えると地形防御を無効化。':participants.some(u=>!u.supplied)?'補給回復を優先。':participants.length===1?'別方向からもう1個師団を加えると有利。':'敵の移動・到着時刻で結果は変わります。';
+    return{ratio,label,reason,count:participants.length};
+  }
+  function safeWithdrawal(s){
+    const candidates=s.units.filter(u=>u.posture==='SAFE'&&u.org>0&&u.org<30&&u.rest<=0&&(u.pinned||u.attack));
+    for(const u of candidates){
+      const cap=s.cells[home(u.team)],safe=neighbors(s,s.cells[loc(u)]).filter(h=>pass(h)&&h.owner===u.team&&h.supply[u.team]&&!unitAt(s,h));
+      safe.sort((a,b)=>distance(a,cap)-distance(b,cap)||a.id-b.id);
+      if(!safe.length)continue;const old=loc(u);u.c=safe[0].c;u.r=safe[0].r;u.rest=8;u.recovering=true;halt(s,u.id,false);
+      addEvent(s,`${u.name}は安全優先で後退。命令を解除し、再編成。`,'withdraw',old,u.team);
+    }
+    intentions(s);
+  }
+  function intentions(s){
+    const battles=new Map();for(const u of s.units){u.attack=null;u.pinned=false;}
+    for(const u of s.units){
+      const h=s.cells[u.path[0]];if(!h||distance(u,h)!==1||u.org<=8||u.rest>0)continue;
+      const d=unitAt(s,h);if(!d||d.team===u.team)continue;
+      const mission=u.mission&&s.missions.find(m=>m.id===u.mission);
+      if(mission?.kind==='FLANK'&&!mission.secured&&!u.defendingMission)continue;
+      u.attack=d.id;d.pinned=true;
+      if(!battles.has(d.id))battles.set(d.id,[]);battles.get(d.id).push(u.id);
+    }return battles;
+  }
+  function capture(s,u,h){
+    if(h.owner===u.team)return;h.owner=u.team;
+    if(h.terrain==='URBAN'&&h.initialOwner!==u.team){
+      const key=u.team+':'+h.id;
+      if(!s.awards.includes(key)){s.awards.push(key);s.cp[u.team]=clamp(s.cp[u.team]+8,0,100);addEvent(s,`${u.team==='ALLY'?'自軍':'敵軍'}が${h.relay?'中継拠点':'都市'}を確保。+8 CP`,'capture',h.id);}
+    }
+    if(h.capitalFor)addEvent(s,`${u.team==='ALLY'?'敵':'自軍'}首都を占領。補給下の部隊で24時間確保すると作戦決着。`,'capital',h.id);
+  }
+  function relocate(s,u,h){u.c=h.c;u.r=h.r;u.move=0;u.wait=0;if(u.path[0]===h.id)u.path.shift();capture(s,u,h);}
+  function moveUnits(s){
+    const moved=new Set(),sorted=[...s.units].sort((a,b)=>hash(s.tick+':'+a.id)-hash(s.tick+':'+b.id));
+    for(const u of sorted){
+      if(moved.has(u.id)||u.rest>0)continue;
+      if(!u.path.length){u.move=0;continue;}
+      const next=s.cells[u.path[0]];if(!pass(next)||distance(u,next)!==1){halt(s,u.id);continue;}
+      const occ=unitAt(s,next);
+      if(u.pinned&&!(next.owner===u.team&&!occ)){u.move=0;continue;}
+      if(occ&&occ.team!==u.team){u.move=0;continue;}
+      if(occ){
+        if(occ.path[0]===loc(u)&&!occ.pinned&&!u.pinned&&!moved.has(occ.id)&&occ.rest<=0){
+          u.move+=Math.min(speed(s,u,next),speed(s,occ,s.cells[loc(u)]));
+          if(u.move>=100){const old=s.cells[loc(u)];relocate(s,u,next);relocate(s,occ,old);moved.add(u.id);moved.add(occ.id);}
+        }else{
+          u.wait++;
+          if(u.wait>=8&&u.path.length>1){const dest=s.cells[u.path.at(-1)],p=findPath(s,s.cells[loc(u)],dest,u);if(p.length&&p[0]!==u.path[0]){u.path=p;u.move=0;}u.wait=0;}
+        }continue;
+      }
+      u.move+=speed(s,u,next);
+      if(u.move>=100){relocate(s,u,next);moved.add(u.id);}
+    }
+  }
+  function attackPower(s,u,h){
+    let atk=U[u.type].atk*(u.str/100)*(.45+.55*u.org/100);
+    if(u.type==='ARM')atk*=T[h.terrain].armor;
+    if(!u.supplied)atk*=.3;
+    if(s.blitz[u.team]>0&&u.type!=='INF')atk*=1.45;
+    const night=s.tick%24<6||s.tick%24>=20;
+    if(s.config.doc==='INFILTRATION'&&night&&['INF','MOT'].includes(u.type))atk*=1.12;
+    return atk;
+  }
+  function defensePower(s,u,hasSiege=false){return U[u.type].def*(u.str/100)*(1+(hasSiege?0:T[s.cells[loc(u)].terrain].def))*(u.supplied?1:.3);}
+  function loseMen(s,u,pct,pocket=false){
+    const actual=Math.min(u.str,Math.max(0,pct)),men=actual/100*U[u.type].men;u.str=Math.max(0,u.str-actual);s.loss[u.team]+=men;
+    if(u.team==='ENEMY'){if(pocket)s.kpi.pocket+=men;else s.kpi.combat+=men;}
+    return men;
+  }
+  function destroy(s,u,encircled){
+    const men=loseMen(s,u,u.str,encircled);
+    if(encircled){
+      s.cp[u.team==='ALLY'?'ENEMY':'ALLY']=clamp(s.cp[other(u.team)]+14,0,100);
+      if(u.team==='ENEMY'){
+        const pocket=s.pockets[u.pocket]||(s.pockets[u.pocket||s.nextPocket++]={team:u.team,total:0});pocket.total+=men;
+        s.kpi.maxPocket=Math.max(s.kpi.maxPocket,pocket.total);s.kpi.shattered++;
+      }
+    }
+    addEvent(s,`${encircled?'包囲殲滅':'部隊壊滅'}：${u.name} −${Math.round(men).toLocaleString()}名${encircled?' / +14 CP':''}`,encircled?'pocket':'destroy',loc(u));
+    s.units=s.units.filter(x=>x.id!==u.id);
+  }
+  function resolve(s,battles){
+    const damage=new Map(),advance=[],bubbleList=[];
+    const add=(u,org,str)=>{const d=damage.get(u.id)||{org:0,str:0};d.org+=org;d.str+=str;damage.set(u.id,d);};
+    for(const [did,ids] of battles){
+      const d=unitById(s,did),aa=ids.map(n=>unitById(s,n)).filter(u=>u&&d&&u.team!==d.team&&distance(u,d)===1);
+      if(!d||!aa.length)continue;const h=s.cells[loc(d)],siege=aa.some(u=>u.type==='SPG');
+      const flank=1+(aa.length-1)*(s.config.doc==='FIREPOWER'?.38:.30);
+      const ratio=aa.reduce((v,u)=>v+attackPower(s,u,h),0)*flank/Math.max(2,defensePower(s,d,siege));
+      const orgLoss=Math.min(10,1.65*Math.pow(ratio,1.18))*(siege?1.15:1),atkLoss=Math.min(5,1.25/Math.max(.3,ratio))/aa.length;
+      add(d,orgLoss,orgLoss*.15);
+      for(const a of aa){const brk=U[a.type].brk*(s.config.doc==='BLITZ'&&a.type==='ARM'?1.25:1);add(a,atkLoss*18/brk,atkLoss*.095);}
+      const meanOrg=aa.reduce((v,a)=>v+a.org,0)/aa.length;
+      const score=clamp(Math.round(50+Math.atan(ratio*meanOrg/Math.max(12,d.org)-1)*31),1,99);
+      bubbleList.push({target:h.id,from:aa.map(loc),value:aa[0].team==='ALLY'?score:100-score});
+      advance.push({target:h.id,defender:did,attackers:aa.map(u=>u.id)});
+    }
+    s.bubbles=bubbleList;
+    // All losses are accumulated before any retreat; iteration order cannot grant first-strike immunity.
+    for(const [uid,d] of damage){const u=unitById(s,uid);if(u){u.org=Math.max(0,u.org-d.org);loseMen(s,u,d.str);}}
+    const defeated=s.units.filter(u=>u.org<=0||u.str<=0).sort((a,b)=>hash('retreat'+s.tick+a.id)-hash('retreat'+s.tick+b.id));
+    const vacated=new Set();
+    for(const u of defeated){
+      const old=loc(u),cap=s.cells[home(u.team)];
+      const candidates=neighbors(s,s.cells[old]).filter(h=>pass(h)&&h.owner===u.team&&!unitAt(s,h));
+      candidates.sort((a,b)=>{
+        const risk=h=>(h.supply[u.team]?0:20)+neighbors(s,h).filter(n=>{const v=unitAt(s,n);return v&&v.team!==u.team;}).length*3+distance(h,cap);
+        return risk(a)-risk(b)||a.id-b.id;
+      });
+      if(u.str>0&&candidates.length){u.c=candidates[0].c;u.r=candidates[0].r;u.org=23;u.rest=8;u.recovering=true;halt(s,u.id,false);addEvent(s,`${u.name}が後退。8時間の再編成。`,'retreat',old);}
+      else destroy(s,u,!u.supplied&&u.str>0);
+      vacated.add(old);
+    }
+    for(const result of advance){
+      if(!vacated.has(result.target)||unitAt(s,s.cells[result.target]))continue;
+      const survivors=result.attackers.map(n=>unitById(s,n)).filter(a=>a&&a.org>8&&a.rest<=0&&a.path[0]===result.target&&distance(a,s.cells[result.target])===1);
+      survivors.sort((a,b)=>b.org-a.org||hash(s.tick+':win:'+a.id)-hash(s.tick+':win:'+b.id));
+      const lead=survivors.find(a=>!s.units.some(e=>e.team!==a.team&&e.org>8&&e.rest<=0&&e.path[0]===loc(a)&&distance(e,a)===1));
+      if(lead)relocate(s,lead,s.cells[result.target]);
+    }
+    // Remove vanished/moved defender references immediately, even when the game is paused after this tick.
+    intentions(s);
+  }
+  function costs(s){return{blitz:s.config.doc==='BLITZ'?30:40,reinforce:s.config.doc==='INFILTRATION'?30:45};}
+  function blitz(s,team='ALLY'){
+    const cost=costs(s).blitz;if(s.finished||s.cp[team]<cost||s.blitz[team]>0)return false;
+    s.cp[team]-=cost;s.blitz[team]=36;addEvent(s,`${team==='ALLY'?'自軍':'敵軍'}の電撃戦発動。機動部隊の速度＋65%、非歩兵の攻撃＋45%。`,'blitz');return true;
+  }
+  function reinforcement(s,team='ALLY'){
+    const cap=s.cells[home(team)],cost=costs(s).reinforce;
+    if(s.finished||s.cp[team]<cost||cap.owner!==team)return{ok:false,reason:'CPが不足しているか、首都を失っています。'};
+    const h=[cap,...neighbors(s,cap)].find(h=>pass(h)&&h.owner===team&&h.supply[team]&&!unitAt(s,h));
+    if(!h)return{ok:false,reason:'首都周辺に空きマスがありません。'};
+    const n=++s.reinf[team],type=n%2?'MOT':'SPG';s.cp[team]-=cost;s.lastReinf[team]=s.tick;
+    const u=makeUnit(s,team,type,h,`${team==='ENEMY'?'敵':''}増援第${n}${U[type].name}`);u.org=85;if(team==='ALLY')assignMission(s,[u.id],'DEFEND',home('ALLY'));
+    refreshSupply(s);addEvent(s,`${u.name}が到着。`,'reinforce',h.id);return{ok:true,unit:u.id};
+  }
+  function ai(s,team='ENEMY',difficulty=s.config.ai){
+    if(s.finished)return;
+    const ours=s.units.filter(u=>u.team===team),foes=s.units.filter(u=>u.team!==team),assigned=new Set(),master=difficulty==='MASTER',guided=difficulty==='GUIDED';
+    if(guided&&s.tick<48){for(const u of ours)halt(s,u.id);s.aiMessage='敵は守備を維持。最初の48時間で両翼と中継拠点へ展開しよう。';return;}
+    const cap=s.cells[home(team)],enemyCap=s.cells[home(other(team))],threat=foes.filter(f=>distance(f,cap)<=3);
+    const issue=(u,h,avoid=false)=>{const p=findPath(s,s.cells[loc(u)],h,u,{avoidEnemy:avoid});if(p.length){if(p[0]!==u.path[0])u.move=0;u.path=p;assigned.add(u.id);return true;}return false;};
+    if(team==='ENEMY')s.markers=[];
+    for(const u of ours){
+      if(u.rest>0){assigned.add(u.id);continue;}
+      if(u.org<24||!u.supplied){
+        const safe=s.cells.filter(h=>h.owner===team&&h.supply[team]&&pass(h)&&!unitAt(s,h)).sort((a,b)=>distance(a,u)-distance(b,u)+(a.terrain==='URBAN'?-1:0)-(b.terrain==='URBAN'?-1:0));
+        if(!safe.length||!issue(u,safe[0],true))halt(s,u.id);
+        assigned.add(u.id);
+      }
+    }
+    // A real garrison exists on both sides; it moves only to retake a threatened capital.
+    const guard=ours.find(u=>loc(u)===cap.id);
+    if(guard&&!threat.length){halt(s,guard.id);assigned.add(guard.id);}
+    if(cap.owner!==team||threat.length){
+      const reserves=ours.filter(u=>!assigned.has(u.id)&&u.org>35).sort((a,b)=>distance(a,cap)-distance(b,cap));
+      let count=0;
+      for(const u of reserves){if(count>=Math.min(3,threat.length+1))break;if(issue(u,cap.owner!==team?cap:s.cells[loc(threat[0])]))count++;}
+    }
+    // Coordinated attacks are reserved together. No unit is silently reassigned to two targets.
+    for(const f of [...foes].sort((a,b)=>(+a.supplied)-(+b.supplied)||a.org-b.org)){
+      const attackers=ours.filter(u=>!assigned.has(u.id)&&u.org>(master?35:45)&&!u.pinned&&distance(u,f)===1);
+      if(!attackers.length)continue;
+      const ratio=attackers.reduce((v,u)=>v+attackPower(s,u,s.cells[loc(f)]),0)*(1+(attackers.length-1)*.3)/Math.max(2,defensePower(s,f,attackers.some(u=>u.type==='SPG')));
+      if(ratio>(master?.85:1.12)){
+        for(const u of attackers){u.path=[loc(f)];u.move=0;assigned.add(u.id);}
+        if(team==='ENEMY'&&attackers.length>1){s.markers.push({cell:loc(f),label:`集中 ${attackers.length}`});s.aiMessage=`敵が${f.name}へ${attackers.length}方向攻撃。補給と退路を確認。`;}
+      }
+    }
+    const cuts=master?criticalTiles(s,other(team)).filter(x=>!s.cells[x.cell].capitalFor):[];
+    for(const u of ours){
+      if(assigned.has(u.id)||u.pinned||u.org<35)continue;
+      if(guided&&['INF','SPG'].includes(u.type)&&!threat.length){halt(s,u.id);continue;}
+      if(master&&['ARM','MOT'].includes(u.type)){
+        const cut=cuts.filter(x=>!unitAt(s,s.cells[x.cell])&&distance(u,s.cells[x.cell])<=4).sort((a,b)=>b.count*4-distance(u,s.cells[b.cell])-(a.count*4-distance(u,s.cells[a.cell])))[0];
+        if(cut&&issue(u,s.cells[cut.cell],true)){
+          if(team==='ENEMY'){s.markers.push({cell:cut.cell,label:'補給遮断'});s.aiMessage=`敵機動部隊が、${cut.count}個師団につながる補給の急所を狙っています。`;}
+          continue;
+        }
+      }
+      // Release a captured objective instead of queueing forever behind its friendly occupier.
+      if(u.path.length){const goal=s.cells[u.path.at(-1)],holder=unitAt(s,goal);if(goal.owner===team&&holder&&holder.team===team&&holder.id!==u.id)halt(s,u.id);}
+      // Maintain committed routes; react at decision points instead of oscillating every AI tick.
+      if(u.path.length&&u.wait<8){assigned.add(u.id);continue;}
+      const mobile=['ARM','MOT'].includes(u.type),targets=[];
+      for(const h of s.cells){
+        if(!pass(h)||h.owner===team)continue;
+        if(guided&&h.initialOwner===other(team)&&!h.relay)continue;
+        const occ=unitAt(s,h),d=distance(u,h);if(d>9)continue;
+        let value=h.capitalFor===other(team)?15:h.relay?12:h.terrain==='URBAN'?7:0;
+        if(occ){const ratio=attackPower(s,u,h)/Math.max(2,defensePower(s,occ,u.type==='SPG'));value+=ratio>1.1?7:-15;if(!occ.supplied)value+=13;}
+        if(!occ&&mobile&&(h.r<=2||h.r>=6))value+=3;
+        if(!mobile&&!occ&&h.terrain!=='URBAN'&&h.capitalFor!==other(team))value-=3;
+        // Spread uncommitted units over several objectives; concentration remains a combat decision.
+        const commitments=ours.filter(a=>a.id!==u.id&&a.path.at(-1)===h.id).length;
+        value-=Math.max(0,commitments-(occ?2:0))*(master?3:2);
+        value-=d*(mobile?1.5:2.1);
+        if(!mobile&&d>5)value-=8;
+        targets.push({h,value});
+      }
+      targets.sort((a,b)=>b.value-a.value||a.h.id-b.h.id);
+      if(targets[0]&&targets[0].value>-12)issue(u,targets[0].h);
+    }
+    if(master&&s.tick>=60){
+      if(s.cp[team]>=65&&s.tick-s.lastReinf[team]>90&&ours.length<13)reinforcement(s,team);
+      else if(s.cp[team]>=70&&ours.filter(u=>['ARM','MOT'].includes(u.type)&&u.path.length>1&&u.supplied).length>=2)blitz(s,team);
+    }
+    if(team==='ENEMY'&&!s.markers.length)s.aiMessage=master?'敵は機動予備を動かし、補給路の隙を探っています。':'敵は拠点を押さえながら、前線の弱い場所へ移動しています。';
+  }
+  function finish(s,winner,reason){s.finished=true;s.winner=winner;s.reason=reason;addEvent(s,reason,'finish');}
+  function checkVictory(s){
+    if(s.finished)return;
+    const counts=Object.fromEntries(TEAMS.map(t=>[t,s.units.filter(u=>u.team===t).length]));
+    if(!counts.ALLY&&!counts.ENEMY){finish(s,'DRAW','両軍が戦闘能力を喪失。引き分け。');return;}
+    if(!counts.ENEMY){finish(s,'ALLY','敵の全師団を撃破。作戦目標を達成。');return;}
+    if(!counts.ALLY){finish(s,'ENEMY','自軍の全師団が戦闘能力を喪失。');return;}
+    for(const team of TEAMS){
+      const h=s.cells[home(other(team))],u=unitAt(s,h);
+      s.holds[team]=h.owner===team&&h.supply[team]&&u?.team===team&&u.org>8&&!u.pinned?s.holds[team]+1:0;
+    }
+    if(s.holds.ALLY>=CAPTURE_HOURS&&s.holds.ENEMY>=CAPTURE_HOURS)finish(s,'DRAW','両軍が同時に作戦目標を達成。');
+    else for(const t of TEAMS)if(s.holds[t]>=CAPTURE_HOURS){finish(s,t,`${t==='ALLY'?'敵':'自軍'}首都を補給下で24時間確保。`);break;}
+  }
+  function step(s,options={}){
+    if(s.finished)return;
+    if(options.ai!==false){
+      if(s.tick>=s.command.nextAI){ai(s,'ENEMY',s.config.ai);s.command.aiPlans++;s.command.nextAI=s.tick+12;}
+      if(s.tick>=s.command.nextMission){updateMissions(s);s.command.nextMission=s.tick+6;}
+    }
+    s.tick++;
+    for(const team of TEAMS){if(s.blitz[team]>0)s.blitz[team]--;if(s.tick%12===0)s.cp[team]=Math.min(100,s.cp[team]+2+s.cells.filter(h=>h.relay&&h.owner===team&&h.supply[team]).length);}
+    intentions(s);
+    for(const u of s.units){
+      if(u.rest>0)u.rest--;
+      if(u.supplied){if(!u.attack&&!u.pinned)u.org=Math.min(100,u.org+(T[s.cells[loc(u)].terrain].def>=.4?2.1:1.4));}
+      else{u.cutHours++;u.org=Math.max(2,u.org-1.3);if(u.cutHours>6)loseMen(s,u,Math.min(.1,Math.max(0,u.str-5)));}
+    }
+    moveUnits(s);refreshSupply(s);resolve(s,intentions(s));safeWithdrawal(s);refreshSupply(s);
+    checkVictory(s);checkAlerts(s);
+  }
+  function checkAlerts(s){
+    const c=s.command,cap=s.cells[home('ALLY')];
+    const danger=cap.owner!=='ALLY'||s.units.some(u=>u.team==='ENEMY'&&distance(u,cap)<=2);
+    const cut=s.units.filter(u=>u.team==='ALLY'&&!u.supplied).map(u=>u.id),newCuts=cut.filter(n=>!c.cutIds.includes(n));
+    let reason=null;
+    if(danger&&!c.capitalAlert)reason='首都に敵が接近。予備隊の投入先を判断してください。';
+    else if(newCuts.length&&cut.length>=2&&s.tick-c.alertCooldown>=12)reason=`${cut.length}部隊の補給が途絶。通路の奪回か後退を判断してください。`;
+    c.capitalAlert=danger;c.cutIds=cut;
+    if(reason){c.alertCooldown=s.tick;addEvent(s,reason,'alert');if(c.autoPause)c.pauseRequest=reason;}
+  }
+  function report(s){
+    const killed=s.kpi.combat+s.kpi.pocket,loss=s.loss.ALLY;
+    const kd=loss>0?killed/loss:killed>0?Infinity:0,pocket=killed>0?s.kpi.pocket/killed:0;
+    const speedScore=s.tick<=180?40:s.tick<=300?25:10,kdScore=kd>=5?35:kd>=2.5?20:10,pocketScore=pocket>=.5?25:pocket>=.25?15:0,score=speedScore+kdScore+pocketScore;
+    return{kd,pocket,killed,loss,score,speedScore,kdScore,pocketScore,rank:!s.finished?'—':s.winner==='ALLY'?(score>=80?'S':score>=55?'A':'B'):s.winner==='DRAW'?'B':'C'};
+  }
+  function serialize(s){
+    return JSON.stringify({version:6,missions:s.missions,nextMission:s.nextMission,command:s.command,config:s.config,units:s.units,owners:s.cells.map(h=>h.owner),tick:s.tick,cp:s.cp,blitz:s.blitz,reinf:s.reinf,lastReinf:s.lastReinf,nextUid:s.nextUid,nextPocket:s.nextPocket,pockets:s.pockets,received:s.received,loss:s.loss,kpi:s.kpi,awards:s.awards,events:s.events,eventSeq:s.eventSeq,finished:s.finished,winner:s.winner,reason:s.reason,holds:s.holds,aiMessage:s.aiMessage,markers:s.markers});
+  }
+  function restore(raw){
+    const data=JSON.parse(raw);if(![4,5,6].includes(data.version)||!data.config||!Array.isArray(data.units)||!Array.isArray(data.owners)||data.owners.length!==COLS*ROWS)throw Error('Invalid save');
+    const s=scenario(data.config);
+    const keys=['units','tick','cp','blitz','reinf','lastReinf','nextUid','nextPocket','pockets','received','loss','kpi','awards','events','eventSeq','finished','winner','reason','holds','missions','nextMission','command','aiMessage','markers'];
+    for(const key of keys)if(data[key]!==undefined)s[key]=data[key];
+    const occupied=new Set(),uids=new Set();
+    for(const u of s.units){
+      const h=at(s,u.c,u.r);
+      if(!U[u.type]||!TEAMS.includes(u.team)||!pass(h)||occupied.has(h.id)||uids.has(u.id)||!Number.isFinite(u.org)||!Number.isFinite(u.str)||u.org<0||u.org>100||u.str<=0||u.str>100||!Array.isArray(u.path))throw Error('Invalid unit in save');
+      occupied.add(h.id);uids.add(u.id);let from=h;
+      u.posture=['SAFE','PRESS'].includes(u.posture)?u.posture:'SAFE';
+      if(!GROUPS[u.group])u.group=u.name.includes('首都')?'HQ':['INF','SPG'].includes(u.type)?'LINE':u.r<3?'NORTH':u.r>5?'SOUTH':'RESERVE';
+      for(const cellId of u.path){const to=s.cells[cellId];if(!pass(to)||distance(from,to)!==1)throw Error('Invalid route');from=to;}
+    }
+    for(const [i,owner] of data.owners.entries()){if(owner!==null&&!TEAMS.includes(owner))throw Error('Invalid ownership');s.cells[i].owner=owner;}
+    if(!Number.isFinite(s.tick)||s.tick<0||TEAMS.some(t=>!Number.isFinite(s.cp[t])||s.cp[t]<0||s.cp[t]>100))throw Error('Invalid time/CP');
+    if(data.version<6){
+      s.missions=[];s.nextMission=1;s.command={aiPlans:0,nextAI:s.tick+12,nextMission:s.tick+6,autoPause:true,pauseRequest:null,capitalAlert:false,cutIds:[],alertCooldown:-100};
+      for(const u of s.units){u.mission=null;u.recovering=false;if(u.team==='ALLY'&&!u.path.length)assignMission(s,[u.id],'DEFEND',loc(u));}
+    }
+    if(!Array.isArray(s.missions)||!s.command||!Number.isFinite(s.command.nextAI)||!Number.isFinite(s.command.nextMission)||typeof s.command.autoPause!=='boolean'||!Array.isArray(s.command.cutIds))throw Error('Invalid command state');
+    const mids=new Set();
+    for(const m of s.missions){if(!MISSION_TYPES[m.kind]||!pass(s.cells[m.target])||!Array.isArray(m.uids)||mids.has(m.id))throw Error('Invalid mission');mids.add(m.id);}
+    for(const u of s.units){if(u.mission&&!s.missions.some(m=>m.id===u.mission&&m.uids.includes(u.id)))throw Error('Invalid mission reference');u.recovering=!!u.recovering;}
+    refreshSupply(s,false);intentions(s);return s;
+  }
+  return{COLS,ROWS,R,DX,W,H,CAPTURE_HOURS,GROUPS,MISSION_TYPES,PLANS,T,U,MAPS,DOCS,TEAMS,id,at,home,loc,pos,mirror,pass,clamp,hash,random,shuffled,neighbors,distance,unitAt,unitById,scenario,findPath,refreshSupply,criticalTiles,order,groupOrder,forecast,halt,speed,attackPower,defensePower,step,assignMission,updateMissions,applyBattlePlan,detachMission,checkAlerts,ai,costs,blitz,reinforcement,report,serialize,restore,checkVictory,intentions,resolve,loseMen,safeWithdrawal};
+})();
+globalThis.PocketBlitz=PocketBlitz;
+</script>
+<!-- ENGINE_END -->
+<script id="interface">
+(() => {
+  'use strict';
+  const B=PocketBlitz,$=id=>document.getElementById(id),$$=q=>[...document.querySelectorAll(q)];
+  const COLORS={ALLY:'#72d9cb',ENEMY:'#f08575',NEUTRAL:'#e7cf8e'},nf=new Intl.NumberFormat('ja-JP');
+  const format=n=>nf.format(Math.round(n));
+  const icon=id=>`<svg class="icon" aria-hidden="true"><use href="#${id}"/></svg>`;
+  const descriptions={PLAINS:'開けた両翼で機動戦。まずは歩兵で正面を支え、戦車を大きく迂回させよう。',FOREST:'森林の防御をどう崩すか。重砲の支援と、浸透部隊の移動力が勝負を分ける。',CORRIDOR:'山脈が戦線を区切る。狭い通路を押さえつつ、空いた回廊から背後へ回り込もう。',RANDOM:'森林と山岳が生む未知の戦場。敵味方の地形条件と初期補給は公平に保たれる。'};
+  let config={map:'PLAINS',doc:'BLITZ',ai:'GUIDED',plan:'BALANCED',seed:newSeed()},preview=null,game=null,selected=null,screen='setup',speed=0,accumulator=0,saveAt=-1,storedSave=null;
+  let selectedGroup=null,undoStack=[],planTarget=null,missionMode='CAPTURE',pace=1;
+  let showSupply=true,appendRoute=false,lastEvent=0,hover=null,ghost=[],particles=[],texts=[],camera={zoom:1,x:0,y:0},view=null;
+  let muted=true,audio=null,toastTimer=0,frameTime=performance.now(),reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let records={},recorded=false,saveWarning=false,setupFrame=0;
+  const canvas=$('game-canvas'),ctx=canvas.getContext('2d'),pCanvas=$('preview-canvas'),pCtx=pCanvas.getContext('2d');
+  function newSeed(){try{const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0].toString(36).toUpperCase().padStart(7,'0');}catch{return Math.floor(Math.random()*1e9).toString(36).toUpperCase();}}
+  try{records=JSON.parse(localStorage.getItem('pb_records_v6')||'{}')||{};muted=localStorage.getItem('pb_sound_v4')!=='on';const raw=localStorage.getItem('pb_operation_v6')||localStorage.getItem('pb_operation_v5')||localStorage.getItem('pb_operation_v4');if(raw){const saved=B.restore(raw);if(!saved.finished)storedSave=B.serialize(saved);}}catch{storedSave=null;records={};}
+  function toast(msg){$('toast').textContent=msg;$('toast').classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('visible'),2600);}
+  function save(){
+    if(!game)return;
+    try{localStorage.setItem('pb_operation_v6',B.serialize(game));storedSave=game.finished?null:B.serialize(game);saveAt=game.tick;}
+    catch{if(!saveWarning){saveWarning=true;toast('このブラウザでは作戦を保存できません。現在の画面では遊べます。');}}
+  }
+  function sound(type='select'){
+    if(muted)return;
+    try{
+      const C=window.AudioContext||window.webkitAudioContext;if(!C)return;
+      audio=audio||new C();if(audio.state==='suspended')audio.resume().catch(()=>{});
+      const osc=audio.createOscillator(),gain=audio.createGain(),now=audio.currentTime;
+      const values={select:[620,750,.055,.025],order:[380,580,.09,.035],cut:[340,180,.22,.035],pocket:[110,45,.3,.065],blitz:[180,690,.3,.04],capture:[440,880,.18,.035]};
+      const [from,to,duration,volume]=values[type]||values.select;
+      osc.type=type==='pocket'?'triangle':'sine';osc.frequency.setValueAtTime(from,now);osc.frequency.exponentialRampToValueAtTime(to,now+duration);
+      gain.gain.setValueAtTime(volume,now);gain.gain.exponentialRampToValueAtTime(.0001,now+duration);osc.connect(gain);gain.connect(audio.destination);osc.onended=()=>{osc.disconnect();gain.disconnect();};osc.start(now);osc.stop(now+duration);
+    }catch{/* Sound must never prevent a command. */}
+  }
+  function syncSound(){$('sound-toggle').innerHTML=icon(muted?'i-muted':'i-volume');$('sound-toggle').setAttribute('aria-label',muted?'効果音を有効にする':'効果音を無効にする');$('sound-toggle').setAttribute('aria-pressed',String(!muted));}
+  function planning(){return !!game&&!game.finished&&speed===0;}
+  function selectedUnits(){return game?game.units.filter(u=>u.team==='ALLY'&&(selectedGroup?u.group===selectedGroup:u.id===selected)):[];}
+  function selectedMember(u){return u.team==='ALLY'&&(selectedGroup?u.group===selectedGroup:u.id===selected);}
+  function selectedMission(){const members=selectedUnits();return members.length&&members.every(u=>u.mission===members[0].mission)?game.missions.find(m=>m.id===members[0].mission):null;}
+  function syncMissionControl(){missionMode=selectedMission()?.kind||'MANUAL';$('mission-mode').value=missionMode;}
+  function remember(snapshot){if(!planning())return;undoStack.push(snapshot);if(undoStack.length>20)undoStack.shift();}
+  function syncCommandUI(){
+    if(!game)return;
+    $('screen-game').classList.toggle('is-executing',speed>0);
+    $('phase-chip').textContent=game.finished?'作戦終了':speed?'LIVE · 進行中':'PAUSED';
+    $('phase-chip').classList.toggle('green',speed>0);
+    $('pace-toggle').textContent=`▶ ×${pace}`;$('pace-toggle').setAttribute('aria-pressed',String(pace===2));
+    $('auto-pause').textContent='危機停止 '+(game.command.autoPause?'ON':'OFF');$('auto-pause').classList.toggle('active',game.command.autoPause);$('auto-pause').setAttribute('aria-pressed',String(game.command.autoPause));
+    $('paused-label').hidden=speed>0;$('paused-label').textContent='PAUSED · 作戦を考える';
+    const assigned=game.units.filter(u=>u.team==='ALLY'&&u.mission).length;
+    $('command-title').textContent=assigned+'部隊に任務';$('command-detail').textContent=speed?'部隊が確保・防衛を継続中。進行中も指示できます。':'任務を確認して進行。考えるときはいつでも止められます。';
+    $('run-toggle').textContent=speed?'Ⅱ 一時停止':game.tick?'▶ 進行再開':'▶ 作戦開始';$('run-toggle').disabled=game.finished;
+    $('undo-order').disabled=!planning()||!undoStack.length;
+  }
+  function setSpeed(value){
+    speed=game&&!game.finished&&screen==='game'&&value?value:0;accumulator=0;
+    if(speed){undoStack=[];game.command.pauseRequest=null;}
+    syncCommandUI();if(speed===0)save();
+  }
+  function undoOrder(){
+    if(!planning()||!undoStack.length)return;
+    game=B.restore(undoStack.pop());lastEvent=game.eventSeq;particles=[];texts=[];planTarget=null;ghost=[];
+    $('field-message').textContent='直前の指示を取り消しました。';syncMissionControl();updateUI();save();sound();
+  }
+  function changeScreen(name){
+    if(name!=='game')setSpeed(0);screen=name;
+    $$('.screen').forEach(s=>{const active=s.id==='screen-'+name;s.classList.toggle('active',active);s.setAttribute('aria-hidden',String(!active));});
+    accumulator=0;hover=null;ghost=[];cancelGesture();
+    if(name==='game'){requestAnimationFrame(()=>{resizeGame();updateUI();});}
+    else if(name==='setup'){updateRecords();$('continue').hidden=!(game&&!game.finished||storedSave);$('continue').textContent=game&&!game.finished?'現在の作戦へ戻る':'中断した作戦を再開';requestAnimationFrame(drawPreview);}
+  }
+  function updateRecords(){const rec=records[config.map+'|'+config.ai+'|'+config.doc]||{};$('rec-rank').textContent=rec.rank||'—';$('rec-time').textContent=rec.hours!==undefined?`${rec.hours} h`:'—';$('rec-kd').textContent=rec.kd!==undefined?(rec.kd==='Infinity'?'∞':Number(rec.kd).toFixed(1)):'—';}
+  function updateSetup(){
+    $('seed').value=config.seed;$$('[data-map]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.map===config.map)));$$('[data-doc]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.doc===config.doc)));$$('[data-ai]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.ai===config.ai)));
+    $('preview-title').textContent=B.MAPS[config.map];$('map-description').textContent=descriptions[config.map];
+    $('difficulty-note').textContent=config.ai==='GUIDED'?'おすすめ。敵の予定ルートを表示。最初の48時間は敵が守備。作戦の動きを観察しながら慣れよう。':config.ai==='MASTER'?'初期戦力は同等。補給の急所・集中攻撃・CPスキルを使う司令官。':'初期戦力は同等。敵は12時間ごとに戦況を判断。味方は継続任務に従って行動します。';
+    $$('[data-plan]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.plan===config.plan)));
+    $('plan-description').textContent=config.plan==='BALANCED'?'両翼の拠点を押さえ、敵の動きを見てから主攻を決める。':'片翼が敵の背後へ迂回。反対の翼は拠点、歩兵は中央、予備は補給路を守る。';
+    preview=B.scenario(config);updateRecords();cancelAnimationFrame(setupFrame);setupFrame=requestAnimationFrame(drawPreview);
+  }
+  function start(s=null){
+    game=s||B.scenario(config);config={...game.config};selected=game.units.find(u=>u.team==='ALLY')?.id||null;camera={zoom:1,x:0,y:0};
+    selectedGroup='NORTH';selected=game.units.find(u=>u.team==='ALLY'&&u.group==='NORTH')?.id||selected;undoStack=[];planTarget=null;pace=1;particles=[];texts=[];lastEvent=game.eventSeq;recorded=false;appendRoute=false;syncWaypoint();syncMissionControl();changeScreen('game');setSpeed(0);updateUI();save();sound('order');
+    $('field-message').textContent=`${B.PLANS[game.config.plan]}の任務を配備済み。「作戦開始」で戦線を見届けよう。各隊の任務は変更できます。`;
+  }
+  function chooseUnit(uid,focus=false){const u=B.unitById(game,uid);if(!u||u.team!=='ALLY')return;selected=uid;selectedGroup=null;planTarget=null;hover=null;ghost=[];syncMissionControl();sound();updateUI();if(focus&&view&&camera.zoom>1){const p=oriented(B.pos(u),view.portrait);camera.x=(view.worldW/2-p.x)*view.scale;camera.y=(view.worldH/2-p.y)*view.scale;configureView();}}
+  function cycle(dir){if(!game)return;const uu=game.units.filter(u=>u.team==='ALLY');if(!uu.length)return;const index=uu.findIndex(u=>u.id===selected);chooseUnit(uu[(Math.max(0,index)+dir+uu.length)%uu.length].id,true);}
+  function syncWaypoint(){$('waypoint').classList.toggle('active',appendRoute);$('waypoint').setAttribute('aria-pressed',String(appendRoute));$('mobile-waypoint').classList.toggle('active',appendRoute);$('mobile-waypoint').setAttribute('aria-pressed',String(appendRoute));$('mobile-waypoint').textContent='経由点を追加：'+(appendRoute?'ON':'OFF');}
+  function sendOrder(cellId,extra=false){
+    if(!game||!selected||game.finished)return;const u=B.unitById(game,selected);if(!u)return;
+    const snapshot=B.serialize(game),direct=missionMode==='MANUAL'||appendRoute||extra;
+    let result;
+    if(!direct)result=B.assignMission(game,selectedUnits().map(u=>u.id),missionMode,cellId);
+    else if(selectedGroup){for(const unit of selectedUnits())B.detachMission(game,unit);result=B.groupOrder(game,selectedUnits().map(u=>u.id),cellId,appendRoute||extra);}
+    else result=B.order(game,selected,cellId,appendRoute||extra);
+    if(result.ok){
+      remember(snapshot);planTarget=cellId;sound('order');
+      $('field-message').textContent=direct?'直接移動を指示しました。':`${selectedGroup?B.GROUPS[selectedGroup]:u.name}に「${B.MISSION_TYPES[missionMode]}」を委任。到着後の防衛と回復後の復帰を継続します。`;
+      syncMissionControl();updateUI();save();
+    }else if(cellId!==B.loc(u))toast(result.reason);
+  }
+  function processEvents(){
+    if(!game)return;const fresh=game.events.filter(e=>e.seq>lastEvent);if(!fresh.length)return;
+    lastEvent=fresh.at(-1).seq;
+    const important=[...fresh].reverse().find(e=>['pocket','cut','capital','blitz','capture','reinforce','finish'].includes(e.type))||fresh.at(-1);
+    $('field-message').textContent=important.text;
+    for(const e of fresh){
+      if(['pocket','cut','capture','blitz'].includes(e.type))sound(e.type);
+      if(e.cell===null)continue;const p=B.pos(game.cells[e.cell]);
+      if(['pocket','capture','cut','retreat','withdraw'].includes(e.type))texts.push({...p,age:0,life:e.type==='pocket'?2100:1300,text:{pocket:'POCKET CLOSED',capture:'+8 CP',cut:'SUPPLY CUT',retreat:'RETREAT',withdraw:'SAFE RETREAT'}[e.type],color:e.type==='cut'?COLORS.ENEMY:COLORS.NEUTRAL});
+      if(e.type==='pocket'&&!reducedMotion){for(let i=0;i<26;i++){const angle=Math.random()*Math.PI*2,v=22+Math.random()*60;particles.push({...p,vx:Math.cos(angle)*v,vy:Math.sin(angle)*v,age:0,life:500+Math.random()*600});}}
+    }
+  }
+  function fillRoster(container,allies){
+    const existing=new Map([...container.children].map(el=>[Number(el.dataset.unit),el]));
+    for(const u of allies){let btn=existing.get(u.id);if(!btn){btn=document.createElement('button');btn.className='roster-unit';btn.dataset.unit=u.id;btn.innerHTML=icon('u-'+u.type)+'<span class="name"></span><span class="roster-org"></span>';container.append(btn);}existing.delete(u.id);btn.classList.toggle('selected',selectedMember(u));btn.classList.toggle('cut',!u.supplied);btn.setAttribute('aria-pressed',String(selectedMember(u)));btn.querySelector('.name').textContent=u.name;btn.querySelector('.roster-org').textContent=u.supplied?Math.round(u.org)+'%':'補給切れ';}
+    for(const el of existing.values())el.remove();
+  }
+  function updateUI(){
+    if(!game)return;const s=game,allies=s.units.filter(u=>u.team==='ALLY');if(selectedGroup&&!selectedUnits().length)selectedGroup=null;if(!B.unitById(s,selected))selected=(selectedGroup?selectedUnits()[0]:allies[0])?.id||null;const u=B.unitById(s,selected),locked=s.finished;
+    $('ui-time').textContent=`D${String(Math.floor(s.tick/24)+1).padStart(2,'0')} · ${String(s.tick%24).padStart(2,'0')}:00`;
+    $('ui-cp').textContent=s.cp.ALLY;$('ui-loss').textContent=format(s.loss.ENEMY)+' / '+format(s.loss.ALLY);$('unit-count').textContent=allies.length+' UNITS';$('supply-count').textContent=allies.filter(u=>u.supplied).length+' / '+allies.length+' 補給中';
+    const cost=B.costs(s);$('blitz-cost').textContent=s.blitz.ALLY>0?s.blitz.ALLY+'h':cost.blitz+' CP';$('blitz').disabled=locked||s.cp.ALLY<cost.blitz||s.blitz.ALLY>0;
+    const cap=s.cells[B.home('ALLY')],spawnSpace=[cap,...B.neighbors(s,cap)].some(h=>B.pass(h)&&h.owner==='ALLY'&&h.supply.ALLY&&!B.unitAt(s,h));
+    $('reinforce-cost').textContent=cost.reinforce+' CP';$('reinforce').disabled=locked||s.cp.ALLY<cost.reinforce||cap.owner!=='ALLY'||!spawnSpace;
+    $('mission-text').textContent=s.holds.ALLY?`敵首都を確保中 ${s.holds.ALLY} / 24h`:s.holds.ENEMY?`自軍首都が危機！ ${s.holds.ENEMY} / 24h`:'敵首都を補給下で24時間確保';
+    $('mission-text').style.color=s.holds.ENEMY?'var(--red)':'var(--gold)';
+    $('objective-lights').innerHTML=s.cells.filter(h=>h.relay).map(h=>`<i class="obj-light ${h.owner==='ALLY'?'ally':h.owner==='ENEMY'?'enemy':''}" title="${h.owner==='ALLY'?'自軍':h.owner==='ENEMY'?'敵軍':'中立'}の中継拠点"></i>`).join('');
+    $('objective-label').textContent=`中継 ${s.cells.filter(h=>h.relay&&h.owner==='ALLY').length}/3`;
+    if(u){
+      const h=s.cells[B.loc(u)],status=!u.supplied?'補給途絶':u.pinned?'交戦拘束':u.rest>0?'再編成 '+u.rest+'h':u.attack?'攻撃中':'補給良好';
+      $('unit-name').textContent=u.name;$('unit-symbol').innerHTML=icon('u-'+u.type);$('unit-sub').textContent=`${B.U[u.type].name} / ${B.T[h.terrain].name} · ${status}`;
+      $('unit-status').textContent='● '+status;$('unit-status').style.color=!u.supplied?'var(--red)':u.pinned?'var(--gold)':'var(--green)';$('unit-route').textContent=u.wait?'味方の通過待ち':u.path.length?u.path.length+'マス先へ':'命令待機';
+      $('unit-org').textContent=Math.round(u.org)+'%';$('unit-men').textContent=format(B.U[u.type].men*u.str/100);$('org-fill').style.width=u.org+'%';$('str-fill').style.width=u.str+'%';
+      $('tactical-tip').textContent=!u.supplied?'補給が切れています。味方領地を首都へつなぎ直すか、補給下のマスへ後退させましょう。':u.pinned?'敵から攻撃を受けて移動を拘束されています。別の部隊で攻撃元を崩すか、空いた自軍マスへ後退を。':u.type==='ARM'?'機甲は平地で強く、森林や都市で弱くなります。敵の正面より、空いた翼から背後へ。':u.type==='INF'?'歩兵は守備と足止めが得意です。機動部隊が開いた通路を守り、逆包囲を防ぎましょう。':u.type==='SPG'?'砲兵が攻撃に参加すると地形防御が無効になります。歩兵や機甲と同じ敵を狙いましょう。':'自動車化は最速です。空いた拠点を取る、敵の背後へ回る、包囲の最後の穴を閉じる役に。';
+    }else{$('unit-name').textContent='指揮可能な部隊なし';$('unit-sub').textContent='—';$('unit-status').textContent='—';$('unit-org').textContent='—';$('unit-men').textContent='—';$('org-fill').style.width='0%';$('str-fill').style.width='0%';}
+    const members=selectedUnits(),press=members.length>0&&members.every(x=>x.posture==='PRESS');
+    if(selectedGroup&&members.length){
+      const org=members.reduce((n,x)=>n+x.org,0)/members.length,str=members.reduce((n,x)=>n+x.str,0)/members.length;
+      $('unit-name').textContent=`${B.GROUPS[selectedGroup]} · ${members.length}部隊`;$('unit-sub').textContent='目的地を選ぶと分散して展開。敵を選ぶと周囲から攻撃。';
+      $('unit-org').textContent=Math.round(org)+'%';$('unit-men').textContent=format(members.reduce((n,x)=>n+B.U[x.type].men*x.str/100,0));$('org-fill').style.width=org+'%';$('str-fill').style.width=str+'%';
+      $('unit-status').textContent=`${members.filter(x=>x.supplied).length}/${members.length} 補給中`;$('unit-status').style.color=members.every(x=>x.supplied)?'var(--green)':'var(--red)';$('unit-route').textContent=members.filter(x=>x.path.length).length+'部隊に継続命令';
+    }
+    $('posture').textContent=press?'強行':'安全優先';$('posture').setAttribute('aria-pressed',String(press));$('posture').disabled=locked||!members.length;
+    $('unit-halt').disabled=!u||locked;$('waypoint').disabled=locked;$('mobile-waypoint').disabled=locked;$('unit-prev').disabled=!u;$('unit-next').disabled=!u;
+    for(const b of $$('[data-group]')){b.disabled=!allies.some(x=>x.group===b.dataset.group);b.setAttribute('aria-pressed',String(selectedGroup===b.dataset.group));}
+    fillRoster($('roster'),allies);if($('roster-dialog').open)fillRoster($('mobile-roster'),allies);
+    const mission=selectedMission();
+    if(mission){$('unit-sub').textContent=`${B.MISSION_TYPES[mission.kind]} · ${mission.status} · 目標 ${s.cells[mission.target].c},${s.cells[mission.target].r}`;$('unit-route').textContent=mission.status;}
+    $('mission-mode').disabled=s.finished;
+    syncCommandUI();updateHint();
+  }
+  function updateHint(){
+    if(!game)return;const u=B.unitById(game,selected),h=game.cells[hover??planTarget];
+    if(h&&B.pass(h)){
+      const cuts=h.owner?B.criticalTiles(game,h.owner).find(x=>x.cell===h.id):null;
+      if(cuts&&h.owner==='ENEMY'){$('map-hint').textContent=`このマスを取ると敵${cuts.count}個師団の補給を遮断。`;return;}
+      const target=B.unitAt(game,h);if(target&&target.team==='ENEMY'){const f=B.forecast(game,selectedUnits().map(u=>u.id),h.id);$('map-hint').textContent=`攻撃目安：${f.label} · ${f.count}部隊 / 敵ORG ${Math.round(target.org)}% · ${f.reason}`;return;}
+      if(h.capitalFor){$('map-hint').textContent=h.capitalFor==='ENEMY'?'敵首都：自軍部隊を置き、補給をつないで24時間確保。':'自軍首都：すべての補給がここから届く。';return;}
+      if(h.relay){$('map-hint').textContent='中継拠点：初占領で8 CP。補給中は12時間ごとに追加1 CP。';return;}
+      $('map-hint').textContent=`${B.T[h.terrain].name} · 防御 +${Math.round(B.T[h.terrain].def*100)}%${appendRoute?' · 経由点追加ON':''}`;
+    }else if(u&&!u.supplied)$('map-hint').textContent='補給途絶。首都へ領地をつなぎ直そう。';
+    else if(u&&u.wait)$('map-hint').textContent='進路に味方がいます。経由点や停止命令で道を空けよう。';
+    else {const m=selectedMission();$('map-hint').textContent=m?`${B.MISSION_TYPES[m.kind]}任務：${m.status}。目標をタップすると変更。`:'隊を選択 → 任務と目標を指定。部隊が継続して遂行します。';}
+  }
+  function recordWin(){
+    if(recorded||!game.finished||game.winner!=='ALLY')return;recorded=true;
+    const r=B.report(game),key=game.config.map+'|'+game.config.ai+'|'+game.config.doc,old=records[key]||{},rankOrder={S:3,A:2,B:1,C:0};
+    records[key]={rank:!old.rank||rankOrder[r.rank]>rankOrder[old.rank]?r.rank:old.rank,hours:Math.min(old.hours??Infinity,game.tick),kd:Math.max(old.kd==='Infinity'?Infinity:Number(old.kd)||0,r.kd)};
+    if(!Number.isFinite(records[key].kd))records[key].kd='Infinity';
+    try{localStorage.setItem('pb_records_v6',JSON.stringify(records));}catch{/* Current result remains available. */}
+  }
+  function showReport(){
+    if(!game)return;setSpeed(0);const s=game,r=B.report(s),win=s.winner==='ALLY',finished=s.finished;
+    $('report-code').textContent=s.config.seed;$('report-title').textContent=!finished?'SITUATION REPORT':win?'OPERATION COMPLETE':s.winner==='DRAW'?'STALEMATE':'OPERATION FAILED';
+    $('report-title').style.color=!finished?'var(--ink)':win?'var(--blue)':'var(--red)';$('report-subtitle').textContent=finished?s.reason:'戦況を一時停止しています。戦場に戻って次の一手を指示できます。';
+    $('report-rank').textContent=r.rank;
+    let lead='作戦継続中。次の突破口を見つけよう。',detail='包囲率を高めるには、敵の組織率を崩す前に退路を塞ぎましょう。';
+    if(finished&&win){lead=r.rank==='S'?'突破、遮断、包囲。見事な作戦です。':r.rank==='A'?'戦線を動かし、作戦目標を達成。':'作戦成功。次は、より小さな損害で。';detail=r.pocket<.25?'次の課題：正面の消耗戦を減らし、敵の背後を押さえて包囲撃破を増やそう。':r.kd<2.5?'次の課題：単独の正面攻撃を避け、砲兵支援と多方向攻撃を組み合わせよう。':s.tick>300?'次の課題：歩兵が敵を拘束している間に、機動部隊を先へ進めよう。':'補給路を守りながら包囲を閉じた判断が、戦果につながりました。';}
+    if(finished&&!win){lead='敗因を一つ変えて、同じ戦場へ。';detail=s.reason.includes('首都')?'自軍首都と、機動部隊の背後の通路に守備を残しましょう。':'孤立した部隊は急速に弱くなります。補給路の守備と、組織率が尽きる前の後退を。';}
+    $('report-feedback').replaceChildren(document.createTextNode(lead));const small=document.createElement('small');small.textContent=detail;$('report-feedback').append(small);
+    $('kpi-time').textContent=s.tick+' h';$('kpi-time-detail').textContent=`${Math.floor(s.tick/24)}日 ${s.tick%24}時間`;$('kpi-kd').textContent=(r.kd===Infinity?'∞':r.kd.toFixed(1))+' : 1';$('kpi-loss').textContent=`敵 ${format(r.killed)} / 自軍 ${format(r.loss)} 名`;
+    $('kpi-pocket').textContent=Math.round(r.pocket*100)+'%';$('kpi-pocket-men').textContent=format(s.kpi.pocket)+' 名を包囲撃破';$('kpi-max').textContent=format(s.kpi.maxPocket)+' 名';
+    $('report-score').textContent=finished&&win?`速度 ${r.speedScore}/40 ＋ 損害交換比 ${r.kdScore}/35 ＋ 包囲 ${r.pocketScore}/25 ＝ ${r.score}点（S:80点 / A:55点）`:'戦績への記録は勝利時のみ。損失ゼロの場合の交換比は∞として扱います。';
+    $('report-resume').hidden=finished;recordWin();save();changeScreen('report');
+  }
+  // ------------------------- Canvas renderer -------------------------
+  function oriented(p,portrait){return portrait?{x:p.y,y:B.W-p.x}:p;}
+  function project(p,v){const o=oriented(p,v.portrait);return{x:v.ox+o.x*v.scale,y:v.oy+o.y*v.scale};}
+  function inverse(p,v){const x=(p.x-v.ox)/v.scale,y=(p.y-v.oy)/v.scale;return v.portrait?{x:B.W-y,y:x}:{x,y};}
+  function configureView(){
+    const width=canvas.clientWidth,height=canvas.clientHeight;if(!width||!height)return;
+    const portrait=width/height<.92,worldW=portrait?B.H:B.W,worldH=portrait?B.W:B.H;
+    const fit=Math.min((width-22)/worldW,(height-28)/worldH),scale=Math.max(.1,fit)*camera.zoom;
+    const maxX=Math.max(0,(worldW*scale-width)/2+22),maxY=Math.max(0,(worldH*scale-height)/2+22);
+    camera.x=B.clamp(camera.x,-maxX,maxX);camera.y=B.clamp(camera.y,-maxY,maxY);
+    view={width,height,portrait,worldW,worldH,scale,ox:(width-worldW*scale)/2+camera.x,oy:(height-worldH*scale)/2+camera.y};
+    $('map-orientation').textContent=portrait?'自軍：下 / 敵軍：上':'自軍：西 / 敵軍：東';
+    $('zoom-out').disabled=camera.zoom<=1;$('zoom-in').disabled=camera.zoom>=2.8;
+  }
+  function sizeCanvas(c,context){const r=c.getBoundingClientRect();if(!r.width||!r.height)return false;const dpr=Math.min(2,devicePixelRatio||1);c.width=Math.round(r.width*dpr);c.height=Math.round(r.height*dpr);context.setTransform(dpr,0,0,dpr,0,0);return true;}
+  function resizeGame(){if(screen!=='game')return;if(sizeCanvas(canvas,ctx)){camera.x=0;camera.y=0;configureView();}}
+  function hexPath(context,p,r,portrait=false){context.beginPath();for(let i=0;i<6;i++){const a=(60*i-30)*(Math.PI/180)-(portrait?Math.PI/2:0),x=p.x+r*Math.cos(a),y=p.y+r*Math.sin(a);i?context.lineTo(x,y):context.moveTo(x,y);}context.closePath();}
+  function terrainMark(context,h,p,scale){
+    const r=B.R*scale;
+    if(h.terrain==='FOREST'){
+      context.fillStyle='#6e957956';
+      for(let i=0;i<3;i++){const x=p.x+(i-1)*r*.27,y=p.y+(i===1?-r*.35:r*.12),z=r*.23;context.beginPath();context.moveTo(x,y-z);context.lineTo(x-z*.72,y+z*.6);context.lineTo(x+z*.72,y+z*.6);context.closePath();context.fill();}
+    }else if(h.terrain==='MOUNTAIN'){
+      context.strokeStyle='#63786f88';context.fillStyle='#53635b33';context.lineWidth=Math.max(.6,scale);
+      context.beginPath();context.moveTo(p.x-r*.65,p.y+r*.34);context.lineTo(p.x-r*.16,p.y-r*.48);context.lineTo(p.x+r*.16,p.y+r*.07);context.lineTo(p.x+r*.38,p.y-r*.22);context.lineTo(p.x+r*.73,p.y+r*.34);context.closePath();context.fill();context.stroke();
+      context.beginPath();context.moveTo(p.x-r*.31,p.y-r*.22);context.lineTo(p.x-r*.17,p.y-r*.11);context.lineTo(p.x-r*.04,p.y-r*.25);context.stroke();
+    }else if(h.terrain==='URBAN'||h.terrain==='CAPITAL'){
+      context.strokeStyle='#d4c58d55';context.lineWidth=Math.max(.6,scale);
+      for(let i=0;i<3;i++)context.strokeRect(p.x+(i-1)*r*.23-r*.08,p.y+r*.07,r*.16,r*(i===1?.45:.3));
+    }else if(h.id%3===0){context.fillStyle='#85978835';context.fillRect(p.x-r*.3,p.y+r*.22,1,1);context.fillRect(p.x+r*.3,p.y-r*.22,1,1);}
+  }
+  function drawUnit(context,u,v,selectedUnit,now,mini){
+    const p=project(B.pos(u),v),ww=B.clamp(35*v.scale,mini?12:18,46),hh=ww*.59;
+    const col=COLORS[u.team],active=!mini&&selectedMember(u);
+    if(active){hexPath(context,p,B.R*v.scale*.92,v.portrait);context.strokeStyle='#e9d394';context.lineWidth=2;context.stroke();}
+    context.shadowColor='#0005';context.shadowBlur=mini?0:4;context.shadowOffsetY=2;context.fillStyle=u.team==='ALLY'?'#244640':'#573b35';context.fillRect(p.x-ww/2,p.y-hh/2,ww,hh);context.shadowBlur=0;context.shadowOffsetY=0;
+    context.strokeStyle=col;context.lineWidth=active?1.7:1.1;context.strokeRect(p.x-ww/2,p.y-hh/2,ww,hh);
+    context.strokeStyle=u.team==='ALLY'?'#c4ede1':'#f1c4b3';context.fillStyle=context.strokeStyle;context.lineWidth=Math.max(.8,v.scale);
+    if(u.type==='INF'||u.type==='MOT'){
+      context.beginPath();context.moveTo(p.x-ww/2+2,p.y-hh/2+1);context.lineTo(p.x+ww/2-2,p.y+hh/2-1);context.moveTo(p.x+ww/2-2,p.y-hh/2+1);context.lineTo(p.x-ww/2+2,p.y+hh/2-1);context.stroke();
+      if(u.type==='MOT'){context.beginPath();context.moveTo(p.x-ww*.2,p.y-hh/2+1);context.lineTo(p.x-ww*.2,p.y+hh/2-1);context.moveTo(p.x+ww*.2,p.y-hh/2+1);context.lineTo(p.x+ww*.2,p.y+hh/2-1);context.stroke();}
+    }else if(u.type==='ARM'){context.beginPath();context.ellipse(p.x,p.y,ww*.28,hh*.29,0,0,Math.PI*2);context.stroke();}
+    else{context.beginPath();context.arc(p.x,p.y,ww*.1,0,Math.PI*2);context.fill();}
+    if(mini)return;
+    context.fillStyle='#0f1b1c';context.fillRect(p.x-ww/2,p.y+hh/2+3,ww,5);
+    context.fillStyle=COLORS.ALLY;context.fillRect(p.x-ww/2,p.y+hh/2+3,ww*u.org/100,2);
+    context.fillStyle=COLORS.NEUTRAL;context.fillRect(p.x-ww/2,p.y+hh/2+6,ww*u.str/100,1.5);
+    if(u.move>0){context.fillStyle=col;context.fillRect(p.x-ww/2,p.y-hh/2-4,ww*u.move/100,2);}
+    if(!u.supplied||u.pinned){context.beginPath();context.arc(p.x+ww/2,p.y-hh/2,5,0,Math.PI*2);context.fillStyle=!u.supplied?'#b45043':'#a98340';context.fill();context.fillStyle='#fff5d9';context.font='bold 8px sans-serif';context.textAlign='center';context.textBaseline='middle';context.fillText('!',p.x+ww/2,p.y-hh/2+.5);}
+  }
+  function pathLine(context,s,start,route,v,color,width,dashed=false){
+    if(!route.length)return;context.beginPath();let p=project(B.pos(start),v);context.moveTo(p.x,p.y);
+    for(const hid of route){const h=s.cells[hid];if(!h)continue;p=project(B.pos(h),v);context.lineTo(p.x,p.y);}
+    context.strokeStyle=color;context.lineWidth=width;context.setLineDash(dashed?[4,5]:[]);context.stroke();context.setLineDash([]);
+    const prev=route.length>1?s.cells[route.at(-2)]:start,p2=project(B.pos(prev),v),a=Math.atan2(p.y-p2.y,p.x-p2.x),z=6;
+    context.fillStyle=color;context.beginPath();context.moveTo(p.x,p.y);context.lineTo(p.x-z*Math.cos(a-.5),p.y-z*Math.sin(a-.5));context.lineTo(p.x-z*Math.cos(a+.5),p.y-z*Math.sin(a+.5));context.closePath();context.fill();
+  }
+  function drawBoard(context,s,v,now=0,mini=false){
+    context.clearRect(0,0,v.width,v.height);context.save();
+    for(const h of s.cells){
+      if(h.outside)continue;const p=project(B.pos(h),v),r=B.R*v.scale;
+      hexPath(context,p,r-1,v.portrait);context.fillStyle=B.T[h.terrain].color;context.fill();
+      if(B.pass(h)){context.fillStyle=h.owner==='ALLY'?'#72d9cb0e':h.owner==='ENEMY'?'#ee8f7414':'#e5cf8a0a';context.fill();if(h.owner&&!h.supply[h.owner]){context.fillStyle='#080f10a3';context.fill();}}
+      context.strokeStyle=h.owner==='ALLY'?'#668c7655':h.owner==='ENEMY'?'#967b6655':'#b6a77855';context.lineWidth=.7;context.stroke();terrainMark(context,h,p,v.scale);
+    }
+    // Low contrast rails; supply uses its own moving, colored lines.
+    context.beginPath();for(const h of s.cells.filter(h=>h.rail&&B.pass(h)))for(const n of B.neighbors(s,h))if(n.rail&&n.id>h.id&&B.pass(n)){const p=project(B.pos(h),v),q=project(B.pos(n),v);context.moveTo(p.x,p.y);context.lineTo(q.x,q.y);}
+    context.strokeStyle='#c1b88a27';context.lineWidth=Math.max(1,2*v.scale);context.setLineDash([3,3]);context.stroke();context.setLineDash([]);
+    if(!mini&&showSupply){
+      for(const team of B.TEAMS)for(const edge of s.edges[team]){const p=project(B.pos(s.cells[edge.from]),v),q=project(B.pos(s.cells[edge.to]),v);context.beginPath();context.moveTo(p.x,p.y);context.lineTo(q.x,q.y);context.strokeStyle=team==='ALLY'?'#72d9cb55':'#f0857548';context.lineWidth=Math.min(3.2,1+edge.flow*.3)*Math.min(1.2,v.scale);context.setLineDash([4,6]);context.lineDashOffset=reducedMotion?0:-now*.014;context.stroke();}
+      context.setLineDash([]);context.lineDashOffset=0;
+      for(const team of B.TEAMS)for(const cut of B.criticalTiles(s,team).filter(x=>x.count>=2)){
+        const h=s.cells[cut.cell];if(B.unitAt(s,h))continue;const p=project(B.pos(h),v);context.beginPath();context.arc(p.x,p.y,7,0,Math.PI*2);context.fillStyle='#263229';context.fill();context.strokeStyle='#d5bd79';context.lineWidth=1;context.stroke();context.fillStyle='#ead498';context.font='bold 8px sans-serif';context.textAlign='center';context.textBaseline='middle';context.fillText(String(cut.count),p.x,p.y);
+      }
+    }
+    for(const h of s.cells){
+      if(h.capitalFor||h.relay){const p=project(B.pos(h),v);context.textAlign='center';context.textBaseline='middle';context.fillStyle=h.owner?COLORS[h.owner]:COLORS.NEUTRAL;
+        const markY=p.y-B.R*v.scale*.61,markSize=Math.max(mini?3:3.5,5*v.scale);context.beginPath();
+        if(h.capitalFor){for(let i=0;i<10;i++){const a=-Math.PI/2+i*Math.PI/5,r=markSize*(i%2?.43:1),x=p.x+Math.cos(a)*r,y=markY+Math.sin(a)*r;i?context.lineTo(x,y):context.moveTo(x,y);}context.closePath();context.fill();}
+        else{context.moveTo(p.x,markY-markSize);context.lineTo(p.x+markSize*.7,markY);context.lineTo(p.x,markY+markSize);context.lineTo(p.x-markSize*.7,markY);context.closePath();context.strokeStyle=context.fillStyle;context.lineWidth=.9;context.stroke();}
+        if(!mini&&v.scale>.65&&h.capitalFor){context.font='8px sans-serif';context.fillStyle='#c5ceba';context.fillText(h.capitalFor==='ALLY'?'自軍首都':'敵首都',p.x,p.y+B.R*v.scale*.76);}}
+    }
+    if(!mini){
+      if(s.config.ai==='GUIDED')for(const enemy of s.units.filter(u=>u.team==='ENEMY'))pathLine(context,s,enemy,enemy.path,v,'#f08575b0',1.7,true);
+      const mission=selectedMission();if(mission){const p=project(B.pos(s.cells[mission.target]),v);context.beginPath();context.arc(p.x,p.y,Math.max(9,15*v.scale),0,Math.PI*2);context.strokeStyle=COLORS.NEUTRAL;context.lineWidth=2;context.setLineDash([3,4]);context.stroke();context.setLineDash([]);context.font='bold 10px sans-serif';context.textAlign='center';context.fillStyle=COLORS.NEUTRAL;context.fillText(B.MISSION_TYPES[mission.kind],p.x,p.y-20*v.scale);}
+      for(const u of s.units)if(u.path.length&&u.team==='ALLY')pathLine(context,s,u,u.path,v,selectedMember(u)?'#e5cd8ddd':'#77b8a75c',selectedMember(u)?2.3:1.2);
+      if(ghost.length){const u=B.unitById(s,selected);if(u)pathLine(context,s,appendRoute&&u.path.length?s.cells[u.path.at(-1)]:u,ghost,v,'#e9dca285',1.4,true);}
+      if(hover!==null&&s.cells[hover]&&!s.cells[hover].outside){const p=project(B.pos(s.cells[hover]),v);hexPath(context,p,B.R*v.scale-2,v.portrait);context.strokeStyle='#e8d79e';context.lineWidth=1.4;context.stroke();}
+      for(const mark of s.markers){const p=project(B.pos(s.cells[mark.cell]),v);hexPath(context,p,B.R*v.scale-3,v.portrait);context.strokeStyle='#ed8f6eaa';context.lineWidth=1.5;context.setLineDash([3,3]);context.stroke();context.setLineDash([]);context.font='8px sans-serif';context.textAlign='center';context.fillStyle=COLORS.ENEMY;context.fillText(mark.label,p.x,p.y+B.R*v.scale*.75);}
+    }
+    for(const u of s.units)drawUnit(context,u,v,mini?null:selected,now,mini);
+    if(!mini){
+      for(const b of s.bubbles){if(!s.cells[b.target])continue;const end=project(B.pos(s.cells[b.target]),v),from=b.from.map(hid=>project(B.pos(s.cells[hid]),v));const x=(end.x+from.reduce((a,p)=>a+p.x,0)/from.length)/2,y=(end.y+from.reduce((a,p)=>a+p.y,0)/from.length)/2;
+        const color=b.value>=65?'#b4d694':b.value<38?COLORS.ENEMY:COLORS.NEUTRAL;context.beginPath();context.arc(x,y,8,0,Math.PI*2);context.fillStyle='#172326';context.fill();context.strokeStyle=color;context.lineWidth=1.5;context.stroke();context.textAlign='center';context.textBaseline='middle';context.fillStyle=color;context.font='bold 8px monospace';context.fillText(b.value,x,y);}
+      for(const pt of particles){const p=project(pt,v);context.globalAlpha=Math.max(0,1-pt.age/pt.life);context.fillStyle=COLORS.NEUTRAL;context.fillRect(p.x-1.5,p.y-1.5,3,3);}
+      for(const ft of texts){const p=project(ft,v);context.globalAlpha=Math.min(1,(ft.life-ft.age)/400);context.fillStyle=ft.color;context.font='bold 11px monospace';context.textAlign='center';context.shadowColor='#0c1718';context.shadowBlur=4;context.fillText(ft.text,p.x,p.y-24-ft.age*.014);context.shadowBlur=0;}
+      context.globalAlpha=1;
+    }
+    context.restore();
+  }
+  function drawPreview(){if(!preview||screen!=='setup'||!sizeCanvas(pCanvas,pCtx))return;const width=pCanvas.clientWidth,height=pCanvas.clientHeight,scale=Math.min((width-24)/B.W,(height-40)/B.H);drawBoard(pCtx,preview,{width,height,scale,portrait:false,ox:(width-B.W*scale)/2,oy:(height-B.H*scale)/2},0,true);}
+  function hit(point){
+    if(!view||!game)return null;const p=inverse(point,view),rr=B.R*.99;
+    // Exact point-in-hex inequalities avoid circular dead zones at the corners.
+    for(const h of game.cells){if(h.outside)continue;const hp=B.pos(h),dx=Math.abs(p.x-hp.x),dy=Math.abs(p.y-hp.y);if(dx<=Math.sqrt(3)*rr/2&&dy<=rr&&Math.sqrt(3)*dy+dx<=Math.sqrt(3)*rr)return h;}
+    return null;
+  }
+  function canvasPoint(e){const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}
+  function zoomTo(value,point=null){
+    if(!view)return;const old=view,anchor=point||{x:old.width/2,y:old.height/2},world=inverse(anchor,old);camera.zoom=B.clamp(value,1,2.8);configureView();const after=project(world,view);camera.x+=anchor.x-after.x;camera.y+=anchor.y-after.y;configureView();
+  }
+  // ------------------------- Pointer gestures -------------------------
+  const pointers=new Map();let gesture=null,pinch=null,ignorePointers=false;
+  function cancelGesture(){gesture=null;pinch=null;ignorePointers=false;pointers.clear();ghost=[];}
+  canvas.addEventListener('pointerdown',e=>{
+    if(!game||game.finished)return;e.preventDefault();canvas.focus({preventScroll:true});const p=canvasPoint(e);pointers.set(e.pointerId,p);try{canvas.setPointerCapture(e.pointerId);}catch{}
+    if(pointers.size>1){const a=[...pointers.values()];pinch={distance:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y),zoom:camera.zoom,mid:{x:(a[0].x+a[1].x)/2,y:(a[0].y+a[1].y)/2}};gesture=null;ignorePointers=true;ghost=[];return;}
+    const h=hit(p);if(e.button===2){if(h)sendOrder(h.id,e.shiftKey);gesture=null;return;}
+    const u=h&&B.unitAt(game,h);
+    if(u&&u.team==='ALLY'){chooseUnit(u.id);gesture={mode:'order',pointer:e.pointerId,start:p,moved:false,from:h.id};}
+    else gesture={mode:'pan',pointer:e.pointerId,start:p,moved:false,pan:{x:camera.x,y:camera.y},target:h?.id??null};
+  });
+  canvas.addEventListener('pointermove',e=>{
+    const p=canvasPoint(e);if(pointers.has(e.pointerId))pointers.set(e.pointerId,p);
+    if(pinch&&pointers.size>=2){const a=[...pointers.values()],mid={x:(a[0].x+a[1].x)/2,y:(a[0].y+a[1].y)/2},d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);zoomTo(pinch.zoom*d/Math.max(1,pinch.distance),mid);camera.x+=mid.x-pinch.mid.x;camera.y+=mid.y-pinch.mid.y;pinch.mid=mid;configureView();return;}
+    const h=hit(p);if(hover!==(h?.id??null)){hover=h?.id??null;updateHint();}
+    if(!gesture||ignorePointers)return;
+    if(Math.hypot(p.x-gesture.start.x,p.y-gesture.start.y)>7)gesture.moved=true;
+    if(gesture.mode==='pan'&&gesture.moved){camera.x=gesture.pan.x+p.x-gesture.start.x;camera.y=gesture.pan.y+p.y-gesture.start.y;configureView();}
+    else if(gesture.mode==='order'&&gesture.moved&&h){const u=B.unitById(game,selected);if(u)ghost=B.findPath(game,appendRoute&&u.path.length?game.cells[u.path.at(-1)]:game.cells[B.loc(u)],h,u);}
+  });
+  function pointerEnd(e,canceled=false){
+    const p=canvasPoint(e),g=gesture;
+    if(!canceled&&!ignorePointers&&g&&g.pointer===e.pointerId){const h=hit(p);if(g.mode==='order'&&g.moved&&h&&h.id!==g.from)sendOrder(h.id,e.shiftKey);else if(g.mode==='pan'&&!g.moved&&h)sendOrder(h.id,e.shiftKey);}
+    pointers.delete(e.pointerId);gesture=null;ghost=[];if(pointers.size===0){ignorePointers=false;pinch=null;}else ignorePointers=true;
+    try{if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);}catch{}
+  }
+  canvas.addEventListener('pointerup',e=>pointerEnd(e));canvas.addEventListener('pointercancel',e=>pointerEnd(e,true));canvas.addEventListener('lostpointercapture',e=>{if(pointers.has(e.pointerId))pointerEnd(e,true);});
+  canvas.addEventListener('pointerleave',()=>{if(!gesture){hover=null;updateHint();}});canvas.addEventListener('contextmenu',e=>e.preventDefault());
+  canvas.addEventListener('wheel',e=>{e.preventDefault();zoomTo(camera.zoom*Math.exp(-e.deltaY*.001),canvasPoint(e));},{passive:false});
+  // ------------------------- DOM commands -------------------------
+  $$('[data-map]').forEach(b=>b.addEventListener('click',()=>{config.map=b.dataset.map;updateSetup();sound();}));
+  $$('[data-doc]').forEach(b=>b.addEventListener('click',()=>{config.doc=b.dataset.doc;updateSetup();sound();}));
+  $$('[data-ai]').forEach(b=>b.addEventListener('click',()=>{config.ai=b.dataset.ai;updateSetup();sound();}));
+  $('reroll').addEventListener('click',()=>{config.seed=newSeed();updateSetup();sound();});$('seed').addEventListener('change',()=>{config.seed=$('seed').value.trim().slice(0,24)||newSeed();updateSetup();});
+  $('launch').addEventListener('click',()=>{if(game&&!game.finished&&game.tick>0&&!confirm('現在の作戦を終了して、新しい作戦を開始しますか？'))return;start();});
+  $('continue').addEventListener('click',()=>{if(game&&!game.finished){changeScreen('game');setSpeed(0);}else if(storedSave){try{start(B.restore(storedSave));}catch{storedSave=null;$('continue').hidden=true;toast('保存データを読み込めませんでした。新しい作戦を開始してください。');}}});
+  $('back-setup').addEventListener('click',()=>{changeScreen('setup');updateSetup();});$('run-toggle').addEventListener('click',()=>{setSpeed(speed?0:pace);updateUI();});$('pace-toggle').addEventListener('click',()=>{pace=pace===1?2:1;if(speed)setSpeed(pace);syncCommandUI();});$('auto-pause').addEventListener('click',()=>{if(game){game.command.autoPause=!game.command.autoPause;game.command.pauseRequest=null;syncCommandUI();save();}});$('undo-order').addEventListener('click',undoOrder);
+  $$('[data-group]').forEach(b=>b.addEventListener('click',()=>{if(!game)return;const members=game.units.filter(u=>u.team==='ALLY'&&u.group===b.dataset.group);if(!members.length)return;selectedGroup=b.dataset.group;selected=members[0].id;hover=null;planTarget=null;ghost=[];syncMissionControl();updateUI();sound();}));
+  $('unit-prev').addEventListener('click',()=>cycle(-1));$('unit-next').addEventListener('click',()=>cycle(1));$('unit-halt').addEventListener('click',()=>{if(game&&!game.finished&&selected){remember(B.serialize(game));for(const u of selectedUnits())B.halt(game,u.id);planTarget=null;$('field-message').textContent='任務を解除しました。この位置で待機します。';syncMissionControl();updateUI();save();sound();}});
+  $('posture').addEventListener('click',()=>{if(!game||game.finished)return;const members=selectedUnits();if(!members.length)return;remember(B.serialize(game));const posture=members.every(u=>u.posture==='PRESS')?'SAFE':'PRESS';for(const u of members)u.posture=posture;$('field-message').textContent=posture==='SAFE'?'安全優先：組織率30%未満で、補給のある退路へ自動後退。':'強行：低組織率でも足止めを継続。退路の確保が必要です。';updateUI();save();});
+  for(const name of ['waypoint','mobile-waypoint'])$(name).addEventListener('click',()=>{if(!game||game.finished)return;appendRoute=!appendRoute;syncWaypoint();toast(appendRoute?'経由点追加ON：現在のルートの末尾へ追加します。':'経由点追加OFF：新しいルートに置き換えます。');});
+  for(const name of ['roster','mobile-roster'])$(name).addEventListener('click',e=>{const b=e.target.closest('[data-unit]');if(b){chooseUnit(+b.dataset.unit,true);if(name==='mobile-roster')$('roster-dialog').close();}});
+  $('blitz').addEventListener('click',()=>{if(!game||game.finished)return;const before=B.serialize(game);if(B.blitz(game)){remember(before);processEvents();updateUI();save();}});
+  $('reinforce').addEventListener('click',()=>{if(!game||game.finished)return;const before=B.serialize(game),r=B.reinforcement(game);if(r.ok){remember(before);selected=r.unit;selectedGroup=null;syncMissionControl();processEvents();updateUI();save();sound('order');}else toast(r.reason);});
+  $$('[data-plan]').forEach(b=>b.addEventListener('click',()=>{config.plan=b.dataset.plan;updateSetup();sound();}));
+  $('battle-plan').addEventListener('click',()=>{if(!game||game.finished)return;setSpeed(0);$('plan-dialog').showModal();});
+  $$('[data-live-plan]').forEach(b=>b.addEventListener('click',()=>{if(!game||game.finished)return;remember(B.serialize(game));B.applyBattlePlan(game,b.dataset.livePlan);config.plan=game.config.plan;syncMissionControl();processEvents();$('plan-dialog').close();updateUI();save();}));
+  $('mission-mode').addEventListener('change',()=>{
+    if(!game||game.finished)return;missionMode=$('mission-mode').value;const m=selectedMission();
+    if(m&&missionMode!=='MANUAL'){const before=B.serialize(game);const r=B.assignMission(game,selectedUnits().map(u=>u.id),missionMode,m.target);if(r.ok){remember(before);$('field-message').textContent=`現在の目標への任務を「${B.MISSION_TYPES[missionMode]}」に変更。`;updateUI();save();}}
+    else toast('目標をタップして指示してください。');
+  });
+  $('supply-toggle').addEventListener('click',()=>{showSupply=!showSupply;$('supply-toggle').classList.toggle('active',showSupply);$('supply-toggle').setAttribute('aria-pressed',String(showSupply));});
+  $('sound-toggle').addEventListener('click',()=>{muted=!muted;syncSound();try{localStorage.setItem('pb_sound_v4',muted?'off':'on');}catch{}sound();});
+  $('report-button').addEventListener('click',showReport);$('report-resume').addEventListener('click',()=>{changeScreen('game');setSpeed(0);});
+  $('replay').addEventListener('click',()=>{if(game)config={...game.config};start();});$('new-battle').addEventListener('click',()=>{config.seed=newSeed();changeScreen('setup');updateSetup();});
+  $('zoom-in').addEventListener('click',()=>zoomTo(camera.zoom+.3));$('zoom-out').addEventListener('click',()=>zoomTo(camera.zoom-.3));$('zoom-fit').addEventListener('click',()=>{camera={zoom:1,x:0,y:0};configureView();});
+  $$('[data-help]').forEach(b=>b.addEventListener('click',()=>{setSpeed(0);$('help-dialog').showModal();}));$$('[data-close]').forEach(b=>b.addEventListener('click',()=>b.closest('dialog').close()));
+  $('roster-mobile').addEventListener('click',()=>{setSpeed(0);if(game)fillRoster($('mobile-roster'),game.units.filter(u=>u.team==='ALLY'));$('roster-dialog').showModal();});
+  $$('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close();}}));
+  window.addEventListener('keydown',e=>{
+    if(screen!=='game'||!game||game.finished||$$('dialog').some(d=>d.open)||e.target.matches('input,textarea,select'))return;
+    if(e.code==='Space'){e.preventDefault();setSpeed(speed?0:pace);updateHint();}
+    if(e.code==='KeyZ'){e.preventDefault();undoOrder();}
+    if(e.code==='Tab'&&document.activeElement===canvas){e.preventDefault();cycle(e.shiftKey?-1:1);}
+    if(e.code==='KeyX')$('unit-halt').click();if(e.code==='KeyS')$('supply-toggle').click();if(e.code==='Escape'){hover=null;ghost=[];appendRoute=false;syncWaypoint();}
+  });
+  document.addEventListener('visibilitychange',()=>{frameTime=performance.now();accumulator=0;if(document.hidden&&game){setSpeed(0);save();}});
+  window.addEventListener('pagehide',save);window.addEventListener('blur',()=>{if(game&&screen==='game')setSpeed(0);});
+  if(typeof ResizeObserver!=='undefined'){new ResizeObserver(()=>{if(screen==='game')resizeGame();}).observe($('canvas-wrap'));new ResizeObserver(()=>{if(screen==='setup')drawPreview();}).observe(pCanvas.parentElement);}
+  else window.addEventListener('resize',()=>{resizeGame();drawPreview();});
+  function loop(now){
+    const dt=Math.min(100,Math.max(0,now-frameTime));frameTime=now;
+    if(screen==='game'&&game){
+      if(speed>0&&!game.finished&&!document.hidden){
+        accumulator+=dt;const interval=700/speed;let ticks=0;
+        while(accumulator>=interval&&speed>0&&!game.finished&&screen==='game'&&ticks<4){
+          accumulator-=interval;B.step(game);ticks++;processEvents();
+          if(game.finished){setSpeed(0);showReport();break;}
+          if(game.command.pauseRequest){const reason=game.command.pauseRequest;game.command.pauseRequest=null;setSpeed(0);$('field-message').textContent='危機停止：'+reason;toast(reason);break;}
+        }
+        if(ticks&&screen==='game'){updateUI();if(game.tick-saveAt>=12)save();}
+      }
+      for(const pt of particles){pt.age+=dt;pt.x+=pt.vx*dt/1000;pt.y+=pt.vy*dt/1000;}particles=particles.filter(pt=>pt.age<pt.life);
+      for(const ft of texts)ft.age+=dt;texts=texts.filter(ft=>ft.age<ft.life);
+      if(screen==='game'&&view)drawBoard(ctx,game,view,now,false);
+    }
+    requestAnimationFrame(loop);
+  }
+  $('continue').hidden=!storedSave;syncSound();updateSetup();requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
